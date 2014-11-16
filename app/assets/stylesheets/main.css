@@ -1,0 +1,110 @@
+/* Styles from http://xkcd.com */
+
+body{
+	background-color:#96A8C8;
+	text-align:center;
+	font-size:16px;
+	font-variant:small-caps;
+	font-family:Lucida,Helvetica,sans-serif;
+	font-weight:500;
+	text-decoration: none;
+	position: absolute;
+	left: 35%;
+	width: 880px;
+	margin-left: -460px;
+	margin-top: 50px;
+}
+
+a{
+	color:#96A8C8;
+	text-decoration:none;
+	font-weight:800
+}
+
+a:hover{
+	text-decoration:underline
+}
+
+img{
+	border:0
+}
+
+.box { 
+	background:white;
+	border-style:solid;
+	border-width:1.5px;
+	border-color:#071419;
+	border-radius: 12px;
+	-moz-border-radius: 12px;
+}
+
+#middleContainer {
+	width: 880px;
+	margin: 5px  auto;
+	padding: 10px 0;
+}
+
+#ctitle {
+    margin: 10px;
+    font-size: 21px;
+    font-weight: 800;
+}
+
+ul.comicNav {
+	padding:0;
+	list-style-type:none;
+}
+
+ul.comicNav li {
+	display: inline;
+}
+
+ul.comicNav  li a {
+	background-color:#6E7B91;
+	color: #FFF;
+	border: 1.5px solid #333;
+	font-size: 16px;
+	font-weight: 600;
+	padding: 1.5px 12px;
+	margin: 0 4px;
+	text-decoration: none;
+	border-radius: 3px;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	box-shadow: 0 0 5px 0 gray;
+	-moz-box-shadow: 0 0 5px 0 gray;
+	-webkit-box-shadow: 0 0 5px 0 gray;	
+}
+
+ul.comicNav a.selected {
+	background-color: #DDD;
+	color: #6E7B91;
+	box-shadow: none;
+	-moz-box-shadow: none;
+	-webkit-box-shadow: none;
+}
+
+ul.comicNav a:hover {
+	background-color: #FFF;
+	color: #6E7B91;
+	box-shadow: none;
+	-moz-box-shadow: none;
+	-webkit-box-shadow: none;
+}
+
+#middleContainer { position:relative; left:50%; margin-left:-390px; }
+#comic .comic { position:absolute; }
+#comic .panel, #comic .cover, #comic .panel img { position:absolute; }
+#comic .cover { z-index:10; }
+
+#transcript {
+  text-align: left;
+  margin: 12px 80px;
+  font-size: 1.2em;
+}
+
+#transcript-edit #text {
+  width: 90%;
+  min-height: 150px;
+  font-variant: normal;
+}
