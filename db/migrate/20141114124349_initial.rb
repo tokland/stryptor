@@ -1,20 +1,25 @@
 class Initial < ActiveRecord::Migration
   def change
     create_table :transcripts do |t|
+      t.references :strip, index: true
+      t.references :user, index: true
       t.text :text
-      t.timestamps
+      t.timestamps index: true
     end  
 
     create_table :strips do |t|
-      t.integer :position
+      t.integer :position, index: true
       t.attachment :image
-      t.string :code
+      t.string :code, index: true
       t.date :publised_on
       t.timestamps
-    end  
-  
-    add_index :strips, :code
-    add_index :strips, :position
-    add_index :transcripts, :created_at
+    end
+
+    create_table :users do |t|
+      t.string :name
+      t.string :email
+      t.string :provider
+      t.string :uid
+    end
   end
 end

@@ -1,23 +1,64 @@
+<div id="flash">
+  <% flash.each do |type, message| %>
+    <div class="alert <%= type %> fade in">
+      <button class="close" data-dismiss="alert">×</button>
+      <%= message %>
+    </div>
+  <% end %>
+</div>
+
 <div id="middleContainer" class="box">
+  <div id="user-info">
+    <% if current_user %>
+      <%= current_user.name %> (<%= link_to "Salir", signout_path %>)
+    <% else %>
+      Login
+      <%= link_to image_tag("facebook.png", :size => "50"), signin_path %>
+    <% end %>
+  </div>
+  
   <div id="ctitle">
     <%= @strip.title %>
-    (<%= @pagination.index %> de <%= @pagination.total %>)
+    (<%= @pagination.index + 1 %> de <%= @pagination.total %>)
   </div>
   
   <ul class="comicNav">
-    <li><%= link_to("|<", @pagination.first) %></li>
-    <li><%= link_to("< Anterior", @pagination.previous) %></li>
-    <li><%= link_to("Aleatorio", random_strips_path) %></li>
-    <li><%= link_to("Siguiente >", @pagination.next) %></li>
+    <li><%= link_to "|<", @pagination.first %></li>
+    <li><%= link_to "< Anterior", @pagination.previous %></li>
+    <li><%= link_to "Aleatorio", random_strips_path %></li>
+    <li><%= link_to"Siguiente >", @pagination.next %></li>
     
-    <li><%= link_to("Last >|", @pagination.last) %></li>
+    <li><%= link_to "Last >|", @pagination.last %></li>
   </ul>
   
   <div id="comic">
     <%= image_tag @strip.image.url, :width => "800", :height => "228" %>
   </div>
+  
+  <div id="transcript" class="<%= current_user ? 'editable' : '' %>">
+    <div id="transcript-text">
+      <pre><%= @strip.current_transcript.try(:text) || "" %></pre>
+      <% if current_user %>
+        <%= link_to "Editar", "#", :class => "edit" %>
+      <% else %>
+        <%= link_to "Editar", signin_path %>
+      <% end %>
+    </div>
+    
+    <% if current_user %>
+      <%= form_for @strip.current_transcript.try(:dup) || @strip.transcripts.new, 
+                   :url => strip_transcript_path(@strip),
+                   :html => {:id => "transcript-form", 
+                             :style => "display: none"} do |form|%>
+        <%= form.text_area :text %>
+        <br />
+        <%= form.submit "Guardar" %>
+        <%= link_to "Cancelar", "#", :class => "cancel" %>
+      <% end %>
+    <% end %>
+  </div>
 
-  <hr />
+  <br />
   &#169; Quino |
   <a href="http://en.wikipedia.org/wiki/Mafalda">Wikipedia</a> |
   <a href="https://www.google.es/search?q=comprar+mafalda">Comprar</a>

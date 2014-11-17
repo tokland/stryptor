@@ -12,7 +12,7 @@ body{
 	left: 35%;
 	width: 880px;
 	margin-left: -460px;
-	margin-top: 50px;
+	margin-top: 5px;
 }
 
 a{
@@ -108,3 +108,14 @@ ul.comicNav a:hover {
   min-height: 150px;
   font-variant: normal;
 }
+
+#user-info {
+  text-align: right;
+  margin-right: 20px;
+}
+
+#transcript_text {
+  width: 90%;
+  min-height: 120px;
+}
+

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141114124349) do
+ActiveRecord::Schema.define(version: 20141116132931) do
 
   create_table "strips", force: true do |t|
     t.integer  "position"
@@ -25,15 +25,22 @@ ActiveRecord::Schema.define(version: 20141114124349) do
     t.datetime "updated_at"
   end
 
-  add_index "strips", ["code"], name: "index_strips_on_code"
-  add_index "strips", ["position"], name: "index_strips_on_position"
-
   create_table "transcripts", force: true do |t|
+    t.integer  "script_id"
+    t.integer  "user_id"
     t.text     "text"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  add_index "transcripts", ["created_at"], name: "index_transcripts_on_created_at"
+  add_index "transcripts", ["script_id"], name: "index_transcripts_on_script_id"
+  add_index "transcripts", ["user_id"], name: "index_transcripts_on_user_id"
+
+  create_table "users", force: true do |t|
+    t.string "name"
+    t.string "email"
+    t.string "provider"
+    t.string "uid"
+  end
 
 end
