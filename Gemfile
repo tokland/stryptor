@@ -32,6 +32,7 @@ group :development do
   gem 'rb-fsevent', :require=>false
   gem 'rb-inotify', :require=>false
   gem 'byebug'
+  gem 'heroku'
 end
 
 group :development, :test do
