@@ -1,5 +1,5 @@
 source 'http://rubygems.org'
-ruby '2.0.0'
+ruby '2.1.4'
 
 gem 'rails', '4.1.7'
 gem 'pg'
@@ -31,7 +31,7 @@ group :development do
   gem 'rb-fchange', :require=>false
   gem 'rb-fsevent', :require=>false
   gem 'rb-inotify', :require=>false
-  gem 'debugger'
+  gem 'byebug'
 end
 
 group :development, :test do
