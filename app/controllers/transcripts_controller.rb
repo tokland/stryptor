@@ -1,5 +1,5 @@
 class TranscriptsController < ApplicationController
-  before_filter :authenticate_user! 
+  before_filter :authenticate_user!
   
   def create
     @strip, @transcript = Transcript.new_from_params(current_user, params)
@@ -8,7 +8,7 @@ class TranscriptsController < ApplicationController
       redirect_to(@strip)
     else
       @pagination = @strip.pagination
-      render('strips/show') 
+      render('strips/show')
     end
   end
 end

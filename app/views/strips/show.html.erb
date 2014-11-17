@@ -12,8 +12,7 @@
     <% if current_user %>
       <%= current_user.name %> (<%= link_to "Salir", signout_path %>)
     <% else %>
-      Login
-      <%= link_to image_tag("facebook.png", :size => "50"), signin_path %>
+      <%= link_to "Entrar ".html_safe + image_tag("facebook.png", :size => "32"), signin_path %>
     <% end %>
   </div>
   
@@ -36,24 +35,26 @@
   </div>
   
   <div id="transcript" class="<%= current_user ? 'editable' : '' %>">
-    <div id="transcript-text">
-      <pre><%= @strip.current_transcript.try(:text) || "" %></pre>
+    <div class="toggle-edit">
+     <%= content_tag(:pre, @strip.current_text, class: "text") %>
+     
       <% if current_user %>
-        <%= link_to "Editar", "#", :class => "edit" %>
+        <%= button_to "Editar", "#", :class => "edit" %>
       <% else %>
-        <%= link_to "Login para editar", signin_path %>
+        <%= link_to "Editar (entrar en FB)", signin_path %>
       <% end %>
     </div>
     
     <% if current_user %>
       <%= form_for @strip.current_transcript.try(:dup) || @strip.transcripts.new, 
                    :url => strip_transcript_path(@strip),
-                   :html => {:id => "transcript-form", 
+                   :html => {:id => "transcript-form",
+                             :class => "toggle-edit", 
                              :style => "display: none"} do |form|%>
         <%= form.text_area :text %>
         <br />
         <%= form.submit "Guardar" %>
-        <%= link_to "Cancelar", "#", :class => "cancel" %>
+        <%= button_to "Cancelar", "#", :class => "cancel" %>
       <% end %>
     <% end %>
   </div>
