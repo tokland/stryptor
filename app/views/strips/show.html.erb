@@ -32,7 +32,7 @@
   </ul>
   
   <div id="comic">
-    <%= image_tag @strip.image.url, :width => "800", :height => "228" %>
+    <%= image_tag @strip.image_url, :width => "800", :height => "228" %>
   </div>
   
   <div id="transcript" class="<%= current_user ? 'editable' : '' %>">
@@ -41,7 +41,7 @@
       <% if current_user %>
         <%= link_to "Editar", "#", :class => "edit" %>
       <% else %>
-        <%= link_to "Editar", signin_path %>
+        <%= link_to "Login para editar", signin_path %>
       <% end %>
     </div>
     

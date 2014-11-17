@@ -15,6 +15,11 @@ class Strip < ActiveRecord::Base
     transcripts.order(Transcript[:created_at].desc).first    
   end
   
+  def image_url
+    filename = "mafalda-%s.jpg" % File.basename(code).sub(/-/, '_')
+    URI.join("http://mafalda.zaudera.com/images/", filename) 
+  end
+  
   def title
     "Mafalda #{code}"
   end

@@ -11,7 +11,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141116132931) do
+ActiveRecord::Schema.define(version: 20141114124349) do
+
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
 
   create_table "strips", force: true do |t|
     t.integer  "position"
@@ -26,15 +29,15 @@ ActiveRecord::Schema.define(version: 20141116132931) do
   end
 
   create_table "transcripts", force: true do |t|
-    t.integer  "script_id"
+    t.integer  "strip_id"
     t.integer  "user_id"
     t.text     "text"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  add_index "transcripts", ["script_id"], name: "index_transcripts_on_script_id"
-  add_index "transcripts", ["user_id"], name: "index_transcripts_on_user_id"
+  add_index "transcripts", ["strip_id"], name: "index_transcripts_on_strip_id", using: :btree
+  add_index "transcripts", ["user_id"], name: "index_transcripts_on_user_id", using: :btree
 
   create_table "users", force: true do |t|
     t.string "name"
