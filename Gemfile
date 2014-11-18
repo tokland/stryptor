@@ -20,6 +20,8 @@ gem 'thin'
 gem 'paperclip'
 gem 'kaminari'
 gem 'maybe', require: 'maybe/core_ext'
+gem 'memoist'
+gem 'jquery-ui-rails'
 
 group :development do
   gem 'better_errors'

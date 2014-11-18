@@ -29,26 +29,45 @@
       <%= content_tag(:pre, @strip.current_text, class: "text") %>
      
       <% if current_user %>
-        <%= button_to "Editar", "#", :class => "edit" %>
+        <%= button_to "Editar", "#", :"data-toggle" => ".toggle-edit" %>
       <% else %>
         <%= link_to "Entrar para editar", signin_path %>
       <% end %>
     </div>
-    
+
     <% if current_user %>
       <%= form_for @strip.current_transcript.try(:dup) || @strip.transcripts.new, 
-                   :url => strip_transcript_path(@strip),
-                   :html => {
-                     :id => "transcript-form",
-                     :class => "toggle-edit", 
-                     :style => "display: none",
-                   } do |form|%>
+            :url => strip_transcripts_path(@strip),
+            :html => {:class => "toggle-edit", :style => "display: none"} do |form|%>
         <%= form.text_area :text %>
         
         <br />
         <%= form.submit "Guardar" %>
-        <%= button_to "Cancelar", "#", :class => "cancel" %>
+        <%= button_to "Cancelar", "#", :"data-toggle" => ".toggle-edit" %>
       <% end %>
+    <% end %>
+
+    <% if (tcount = @strip.transcripts.count) > 0 %>
+      <div id="history">
+        <%= link_to "Historial (%s)" % tcount, "#", 
+              :"data-toggle" => "#transcript-history" %>
+        
+        <div id="transcript-history" style="display: none">
+          <ul>
+            <% @strip.transcripts.by_version(:asc).each_with_index.
+                  to_a.reverse.each do |transcript, idx| %>
+              <li>
+                <%= idx + 1 %>.
+                <%= transcript.user.name %> -
+                <%= transcript.created_at.strftime("%d/%m/%Y %H:%M") %> -
+                <%= link_to("texto", "javascript:void()", 
+                      :"data-toggle" => "#transcript-#{transcript.id}")  %>
+                <pre id="transcript-<%= transcript.id %>" style="display: none"><%= transcript.text %></pre>
+              </li>
+            <% end %>
+          </ul>
+        </div>
+      </div>
     <% end %>
   </div>
 

@@ -1,20 +1,24 @@
+debug = (args...) -> 
+  console.debug(args...)
+
 stop_event = (callback) -> 
   (event, callback_args...) ->
     event.preventDefault()
     callback(event, callback_args...)
 
-init_edition_box = ->
-  selectors = [".edit", ".cancel"]
-  complete_selector = ("#transcript.editable " + s for s in selectors).join(',')
-  $(document).on "click", complete_selector, stop_event (ev) ->
-    $(".toggle-edit").toggle()
-
-init_flash = ->
-  $(document).on "click", "#flash .close", stop_event (ev) ->
-    $("#flash").slideUp()
+init_toggle = ->
+  $(document).on "click", "[data-toggle]", stop_event (ev) ->
+    selector = $(ev.target).attr("data-toggle")
+    $(selector).toggle()
+    
+init_close = ->
+  $(document).on "click", "[data-close]", stop_event (ev) ->
+    selector = $(ev.target).attr("data-close")
+    $(selector).slideUp()
 
 main = ->
-  init_edition_box()
-  init_flash()
+  init_toggle()
+  init_close()
+  $(document).tooltip()
 
 $(main)

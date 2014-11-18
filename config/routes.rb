@@ -6,7 +6,7 @@ Rails.application.routes.draw do
   
   resources :strips do
     collection { get :random }
-    resource :transcript
+    resources :transcripts, :only => [:show, :create]
   end
   
   root :to => "strips#index"

@@ -10,6 +10,10 @@ class Strip < ActiveRecord::Base
   def to_param
     code
   end
+  
+  def self.find_by_param!(value)
+    Strip.find_by!(code: value)
+  end
 
   def current_transcript
     transcripts.order(Transcript[:created_at].desc).first    
