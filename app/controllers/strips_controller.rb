@@ -1,6 +1,6 @@
 class StripsController < ApplicationController
   def index
-    redirect_to(Strip.by_code_asc.first)
+    redirect_to(Strip.by_code(:asc).first)
   end
   
   def show

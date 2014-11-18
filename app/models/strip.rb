@@ -4,8 +4,7 @@ class Strip < ActiveRecord::Base
   has_many :transcripts, inverse_of: :strip, dependent: :nullify 
   has_attached_file :image
   validates_attachment :image, content_type: {content_type: ["image/jpeg"]}
-  scope :by_code_asc, proc { order(Strip[:code].asc) }
-  scope :by_code_desc, proc { order(Strip[:code].desc) }
+  scope :by_code, proc { |key| order(Strip[:code].send(key)) }
   
   def to_param
     code
@@ -40,10 +39,10 @@ class Strip < ActiveRecord::Base
     Pagination.from_hash(
       index: position,
       total: Strip.count,
-      first: Strip.by_code_asc.first,
-      last:  Strip.by_code_desc.first,
-      previous: Strip.by_code_desc.where(Strip[:code] < code).first,
-      next: Strip.by_code_asc.where(Strip[:code] > code).first,
+      first: Strip.by_code(:asc).first,
+      last:  Strip.by_code(:desc).first,
+      previous: Strip.by_code(:desc).where(Strip[:code] < code).first,
+      next: Strip.by_code(:asc).where(Strip[:code] > code).first,
     )
   end
 end
