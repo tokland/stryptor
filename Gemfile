@@ -19,6 +19,7 @@ gem 'simple_form'
 gem 'thin'
 gem 'paperclip'
 gem 'kaminari'
+gem 'maybe', require: 'maybe/core_ext'
 
 group :development do
   gem 'better_errors'

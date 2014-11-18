@@ -16,6 +16,6 @@ private
   def render_strip(strip)
     @strip = strip
     @pagination = @strip.pagination
-    render :show
+    render(:show)
   end
 end

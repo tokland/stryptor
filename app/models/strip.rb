@@ -16,7 +16,7 @@ class Strip < ActiveRecord::Base
   end
   
   def current_text
-    current_transcript.try(:text)
+    current_transcript.maybe.text.value
   end
   
   def image_url
@@ -29,7 +29,7 @@ class Strip < ActiveRecord::Base
   end
   
   def self.random
-    offset(rand(Strip.count)).first
+    Strip.offset(rand(Strip.count)).first
   end
   
   def pagination
