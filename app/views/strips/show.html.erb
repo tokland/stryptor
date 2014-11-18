@@ -36,7 +36,7 @@
     </div>
 
     <% if current_user %>
-      <%= form_for @strip.current_transcript.try(:dup) || @strip.transcripts.new, 
+      <%= form_for @strip.transcripts.new(:text => @strip.current_transcript.try(:text)), 
             :url => strip_transcripts_path(@strip),
             :html => {:class => "toggle-edit", :style => "display: none"} do |form|%>
         <%= form.text_area :text %>
@@ -49,7 +49,7 @@
 
     <% if (tcount = @strip.transcripts.count) > 0 %>
       <div id="history">
-        <%= link_to "Historial (%s)" % tcount, "#", 
+        <%= link_to "Historial (%s)" % tcount, "javascript:void()",
               :"data-toggle" => "#transcript-history" %>
         
         <div id="transcript-history" style="display: none">
@@ -59,9 +59,9 @@
               <li>
                 <%= idx + 1 %>.
                 <%= transcript.user.name %> -
-                <%= transcript.created_at.strftime("%d/%m/%Y %H:%M") %> -
-                <%= link_to("texto", "javascript:void()", 
-                      :"data-toggle" => "#transcript-#{transcript.id}")  %>
+                <%= transcript.created_at.localtime.strftime("%d/%m/%Y %H:%M") %> -
+                <%= link_to "texto", "javascript:void()", 
+                      :"data-toggle" => "#transcript-#{transcript.id}" %>
                 <pre id="transcript-<%= transcript.id %>" style="display: none"><%= transcript.text %></pre>
               </li>
             <% end %>
