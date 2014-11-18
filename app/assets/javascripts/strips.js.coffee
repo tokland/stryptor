@@ -16,9 +16,16 @@ init_close = ->
     selector = $(ev.target).attr("data-close")
     $(selector).slideUp()
 
+submit_forms_on_control_enter = ->
+  $(document).on "keydown", "form textarea", (ev) ->
+    if (ev.keyCode == 10 || ev.keyCode == 13) && ev.ctrlKey
+      ev.preventDefault()
+      $(ev.target).parents("form").submit()
+      
 main = ->
   init_toggle()
   init_close()
+  submit_forms_on_control_enter()
   $(document).tooltip()
 
 $(main)
