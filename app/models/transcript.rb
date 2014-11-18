@@ -12,10 +12,10 @@ class Transcript < ActiveRecord::Base
     strip = Strip.find_by!(code: params[:strip_id])
     new_text = params[:transcript].maybe[:text].strip.value
     previous_transcript = strip.transcripts.by_version(:desc).first
-    if previous_transcript && new_text != previous_transcript.text
-      strip.transcripts.new(text: new_text, user: user)
-    else
+    if previous_transcript && new_text == previous_transcript.text
       previous_transcript
+    else
+      strip.transcripts.new(text: new_text, user: user)
     end
   end
   
