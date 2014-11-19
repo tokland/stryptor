@@ -9,7 +9,7 @@ class Transcript < ActiveRecord::Base
   scope :by_version, proc { |key| order(Transcript[:created_at].send(key)) }
   
   def self.from_params(user, params)
-    strip = Strip.find_by_param(params[:strip_id])
+    strip = Strip.find_by_param!(params[:strip_id])
     new_text = params[:transcript].maybe[:text].strip.value
     previous_transcript = strip.transcripts.by_version(:desc).first
     if previous_transcript && new_text == previous_transcript.text
