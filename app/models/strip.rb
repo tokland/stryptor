@@ -6,12 +6,16 @@ class Strip < ActiveRecord::Base
   validates_attachment :image, content_type: {content_type: ["image/jpeg"]}
   scope :by_code, proc { |key| order(Strip[:code].send(key)) }
   
-  def to_param
-    code
+  def self.random
+    Strip.by_code(:asc).offset(rand(Strip.count)).first
   end
   
   def self.find_by_param!(value)
     Strip.find_by!(code: value)
+  end
+
+  def to_param
+    code
   end
 
   def current_transcript
@@ -29,10 +33,6 @@ class Strip < ActiveRecord::Base
   
   def title
     "Mafalda #{code}"
-  end
-  
-  def self.random
-    Strip.offset(rand(Strip.count)).first
   end
   
   def pagination

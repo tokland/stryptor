@@ -29,7 +29,7 @@
       <%= content_tag(:pre, @strip.current_text, class: "text") %>
      
       <% if current_user %>
-        <%= button_to "Editar", "#", :"data-toggle" => ".toggle-edit" %>
+        <%= link_to "Editar", "#", :"data-toggle" => ".toggle-edit" %>
       <% else %>
         <%= link_to "Entrar para editar", signin_path %>
       <% end %>
@@ -43,7 +43,7 @@
         
         <br />
         <%= form.submit "Guardar" %>
-        <%= button_to "Cancelar", "#", :"data-toggle" => ".toggle-edit" %>
+        <%= link_to "Cancelar", "#", :"data-toggle" => ".toggle-edit" %>
       <% end %>
     <% end %>
 
