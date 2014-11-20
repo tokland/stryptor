@@ -1,5 +1,5 @@
 class Transcript < ActiveRecord::Base
-  belongs_to :strip
+  belongs_to :strip, counter_cache: true
   belongs_to :user
   
   validates :text, presence: true

@@ -20,7 +20,6 @@ class Strip < ActiveRecord::Base
     collection = StripCollection.find_by_param!(params[:strip_collection_id])
     collection.strips.find_by_param!(params[:id])
   end
-  
 
   def to_param
     code
