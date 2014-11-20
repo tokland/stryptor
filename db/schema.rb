@@ -11,10 +11,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141114124349) do
+ActiveRecord::Schema.define(version: 20141120115229) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "strip_collections", force: true do |t|
+    t.string   "code"
+    t.string   "name"
+    t.text     "description"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "strips", force: true do |t|
     t.integer  "position"
@@ -26,6 +34,7 @@ ActiveRecord::Schema.define(version: 20141114124349) do
     t.date     "publised_on"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "strip_collection_id"
   end
 
   create_table "transcripts", force: true do |t|

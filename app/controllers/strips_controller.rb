@@ -1,10 +1,13 @@
 class StripsController < ApplicationController
   def index
-    redirect_to(Strip.by_code(:asc).first)
+    strip = Strip.by_code(:asc).first
+    redirect_to([strip.strip_collection, strip])
   end
   
   def show
-    render_strip(Strip.find_by!(code: params[:id]))
+    collection = StripCollection.find_by_param!(params[:strip_collection_id])
+    strip = collection.strips.find_by_param!(params[:id])
+    render_strip(strip)
   end
   
   def random

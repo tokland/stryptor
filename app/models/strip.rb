@@ -1,9 +1,11 @@
 class Strip < ActiveRecord::Base
   Pagination = Struct.new(:index, :total, :first, :previous, :next, :last)
-  
+
+  belongs_to :strip_collection
   has_many :transcripts, inverse_of: :strip, dependent: :nullify 
   has_attached_file :image
   validates_attachment :image, content_type: {content_type: ["image/jpeg"]}
+  validates :strip_collection, presence: true
   scope :by_code, proc { |key| order(Strip[:code].send(key)) }
   
   def self.random

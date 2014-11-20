@@ -12,12 +12,13 @@ class TranscriptsController < ApplicationController
   
   def create
     @transcript = Transcript.from_params(current_user, params)
+    obj = [@transcript.strip.strip_collection, @transcript.strip]
     
     if @transcript.save
-      redirect_to(@transcript.strip)
+      redirect_to(obj)
     else
       error_message = @transcript.errors.full_messages.to_sentence
-      redirect_to(@transcript.strip, :alert => "Error saving: #{error_message}")
+      redirect_to(obj, :alert => "Error saving: #{error_message}")
     end
   end
 end

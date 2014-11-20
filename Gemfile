@@ -22,10 +22,11 @@ gem 'kaminari'
 gem 'maybe', require: 'maybe/core_ext'
 gem 'memoist'
 gem 'jquery-ui-rails'
+gem 'migration_data'
 
 group :development do
   gem 'better_errors'
-  gem 'binding_of_caller', :platforms=>[:mri_20]
+  gem 'binding_of_caller', :platforms => [:mri_20]
   gem 'guard-bundler'
   gem 'guard-rails'
   gem 'guard-rspec'

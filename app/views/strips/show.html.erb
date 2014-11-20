@@ -13,11 +13,11 @@
   </div>
   
   <ul class="comicNav">
-    <li><%= link_to "|<", @pagination.first %></li>
-    <li><%= link_to "< Anterior", @pagination.previous %></li>
-    <li><%= link_to "Aleatorio", random_strips_path %></li>
-    <li><%= link_to"Siguiente >", @pagination.next %></li>
-    <li><%= link_to "Last >|", @pagination.last %></li>
+    <li><%= link_to_strip "|<", @pagination.first %></li>
+    <li><%= link_to_strip "< Anterior", @pagination.previous %></li>
+    <li><%= link_to "Aleatorio", random_path_for_collection_strip(@strip) %></li>
+    <li><%= link_to_strip "Siguiente >", @pagination.next %></li>
+    <li><%= link_to_strip "Last >|", @pagination.last %></li>
   </ul>
   
   <div id="comic">
@@ -37,7 +37,7 @@
 
     <% if current_user %>
       <%= form_for @strip.transcripts.new(:text => @strip.current_transcript.try(:text)), 
-            :url => strip_transcripts_path(@strip),
+            :url => strip_collection_strip_transcripts_path(@strip.strip_collection, @strip),
             :html => {:class => "toggle-edit", :style => "display: none"} do |form|%>
         <%= form.text_area :text %>
         
