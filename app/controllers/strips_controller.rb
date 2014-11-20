@@ -15,8 +15,12 @@ class StripsController < ApplicationController
 private
   
   def render_strip(strip)
-    @strip = strip
-    @pagination = @strip.pagination
-    render(:show)
+    if strip
+      @strip = strip
+      @pagination = @strip.pagination
+      render(:show)
+    else
+      render nothing: true
+    end
   end
 end
