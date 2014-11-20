@@ -13,11 +13,11 @@
   </div>
   
   <ul class="comicNav">
-    <li><%= link_to_strip "|<", @pagination.first %></li>
-    <li><%= link_to_strip "< Anterior", @pagination.previous %></li>
+    <li><%= link_to "|<", strip_path(@pagination.first) %></li>
+    <li><%= link_to "< Anterior", strip_path(@pagination.previous) %></li>
     <li><%= link_to "Aleatorio", random_path_for_collection_strip(@strip) %></li>
-    <li><%= link_to_strip "Siguiente >", @pagination.next %></li>
-    <li><%= link_to_strip "Last >|", @pagination.last %></li>
+    <li><%= link_to "Siguiente >", strip_path(@pagination.next) %></li>
+    <li><%= link_to "Last >|", strip_path(@pagination.last) %></li>
   </ul>
   
   <div id="comic">
@@ -59,7 +59,7 @@
               <li>
                 <%= idx + 1 %>.
                 <%= transcript.user.name %> -
-                <%= transcript.created_at.localtime.strftime("%d/%m/%Y %H:%M") %> -
+                <%= transcript.created_at.utc.strftime("%d/%m/%Y %H:%M UTC") %> -
                 <%= link_to "texto", "javascript:void()", 
                       :"data-toggle" => "#transcript-#{transcript.id}" %>
                 <pre id="transcript-<%= transcript.id %>" style="display: none"><%= transcript.text %></pre>

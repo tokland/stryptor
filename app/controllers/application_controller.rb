@@ -5,6 +5,7 @@ class ApplicationController < ActionController::Base
 
   helper_method :current_user
   helper_method :user_signed_in?
+  helper_method :strip_path
 
   private
   
@@ -23,5 +24,9 @@ class ApplicationController < ActionController::Base
     unless current_user
       redirect_to(root_url, :alert => 'You need to sign in for access to this page')
     end
+  end
+
+  def strip_path(strip)
+    strip ? polymorphic_path([strip.strip_collection, strip]) : nil
   end
 end

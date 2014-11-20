@@ -23,6 +23,7 @@ gem 'maybe', require: 'maybe/core_ext'
 gem 'memoist'
 gem 'jquery-ui-rails'
 gem 'migration_data'
+gem 'exception_notification'
 
 group :development do
   gem 'better_errors'

@@ -7,6 +7,11 @@ class Transcript < ActiveRecord::Base
   validates :user, presence: true
   
   scope :by_version, proc { |key| order(Transcript[:created_at].send(key)) }
+
+  def self.find_by_params!(params)
+    strip = Strip.find_by_param!(params[:strip_id])
+    strip.transcripts.find(params[:id])
+  end
   
   def self.from_params(user, params)
     collection = StripCollection.find_by_param!(params[:strip_collection_id])

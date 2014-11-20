@@ -5,9 +5,7 @@ class StripsController < ApplicationController
   end
   
   def show
-    collection = StripCollection.find_by_param!(params[:strip_collection_id])
-    strip = collection.strips.find_by_param!(params[:id])
-    render_strip(strip)
+    render_strip(Strip.find_by_params!(params))
   end
   
   def random
