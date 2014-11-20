@@ -9,7 +9,8 @@ class Strip < ActiveRecord::Base
   scope :by_code, proc { |key| order(Strip[:code].send(key)) }
   
   def self.random
-    Strip.by_code(:asc).offset(rand(Strip.count)).first
+    #Strip.by_code(:asc).offset(rand(Strip.count)).first
+    Strip.where(transcripts_count: 0).sample
   end
   
   def self.find_by_param!(value)
