@@ -1,8 +1,5 @@
 require 'rails_helper'
 
-# Specs in this file have access to a helper object that includes
-# the StripsHelper. For example:
-#
 # describe StripsHelper do
 #   describe "string concat" do
 #     it "concats two strings with spaces" do

@@ -75,6 +75,6 @@
   </div>
 
   <div id="footer">
-    <%= @strip.strip_collection.footer.html_safe %>
+    <%= @strip.strip_collection.footer.try(:html_safe) %>
   </div>
 </div>

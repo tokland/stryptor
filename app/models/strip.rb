@@ -29,7 +29,9 @@ class Strip < ActiveRecord::Base
   end
 
   def image_url
-    strip_collection.image_url % {code: code}
+    if strip_collection.image_url
+      strip_collection.image_url % {code: code}
+    end
   end
 
   def current_transcript
