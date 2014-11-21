@@ -1,3 +1,5 @@
+<%= content_for(:head_title, @strip.title) %>
+
 <div id="middleContainer" class="box">
   <div id="user-info">
     <% if current_user %>
@@ -21,7 +23,7 @@
   </ul>
   
   <div id="comic">
-    <%= image_tag @strip.image_url, :width => "800", :height => "228" %>
+    <%= image_tag @strip.image.url, :width => "800", :height => "228" %>
   </div>
   
   <div id="transcript" class="<%= current_user ? 'editable' : '' %>">
@@ -72,9 +74,6 @@
   </div>
 
   <div id="footer">
-    <br />
-    &#169; Quino |
-    <a href="http://en.wikipedia.org/wiki/Mafalda">Wikipedia</a> |
-    <a href="https://www.google.es/search?q=comprar+mafalda">Comprar</a>
+    <%= @strip.strip_collection.footer.html_safe %>
   </div>
 </div>

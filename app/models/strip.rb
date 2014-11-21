@@ -3,14 +3,15 @@ class Strip < ActiveRecord::Base
 
   belongs_to :strip_collection
   has_many :transcripts, inverse_of: :strip, dependent: :nullify 
-  has_attached_file :image
+  has_attached_file :image, 
+    :default_url => proc { |image| image.instance.image_url }
   validates_attachment :image, content_type: {content_type: ["image/jpeg"]}
   validates :strip_collection, presence: true
   scope :by_code, proc { |key| order(Strip[:code].send(key)) }
   
   def self.random
     Strip.where(transcripts_count: 0).sample ||
-      Strip.by_code(:asc).offset(rand(Strip.count)).first
+      Strip.by_code(:asc).offset(rand(Strip.count)).first!
   end
   
   def self.find_by_param!(value)
@@ -26,6 +27,10 @@ class Strip < ActiveRecord::Base
     code
   end
 
+  def image_url
+    strip_collection.image_url % {code: code}
+  end
+
   def current_transcript
     transcripts.order(Transcript[:created_at].desc).first    
   end
@@ -34,13 +39,8 @@ class Strip < ActiveRecord::Base
     current_transcript.maybe.text.value
   end
   
-  def image_url
-    filename = "mafalda-%s.jpg" % File.basename(code).sub(/-/, '_')
-    URI.join("http://mafalda.zaudera.com/images/", filename) 
-  end
-  
   def title
-    "Mafalda #{code}"
+    strip_collection.name + " " + code
   end
   
   def pagination

@@ -1,7 +1,6 @@
 class StripsController < ApplicationController
   def index
-    strip = Strip.by_code(:asc).first
-    redirect_to([strip.strip_collection, strip])
+    redirect_to(strip_path(Strip.by_code(:asc).first!))
   end
   
   def show
@@ -15,12 +14,8 @@ class StripsController < ApplicationController
 private
   
   def render_strip(strip)
-    if strip
-      @strip = strip
-      @pagination = @strip.pagination
-      render(:show)
-    else
-      render nothing: true
-    end
+    @strip = strip
+    @pagination = @strip.pagination
+    render(:show)
   end
 end
