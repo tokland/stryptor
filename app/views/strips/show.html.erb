@@ -3,7 +3,7 @@
 <div id="middleContainer" class="box">
   <div id="user-info">
     <% if current_user %>
-      <%= current_user.name %> (<%= link_to "Salir", signout_path %>)
+      <%= current_user.name %> [<%= link_to "Salir", signout_path %>]
     <% else %>
       <%= link_to "Entrar ".html_safe + image_tag("facebook.png", :size => "32"), signin_path %>
     <% end %>
@@ -56,7 +56,7 @@
         
         <div id="transcript-history" style="display: none">
           <ul>
-            <% @strip.transcripts.by_version(:asc).map.with_index.reverse_each do |transcript, idx| %>
+            <% @strip.transcripts.includes(:user).by_version(:asc).map.with_index.reverse_each do |transcript, idx| %>
               <li>
                 <%= idx + 1 %>.
                 <%= transcript.user.name %> -
@@ -64,7 +64,8 @@
                 <%= link_to "texto", "javascript:void()", 
                       :"data-toggle" => "#transcript-#{transcript.id}" %>
                 <%= content_tag(:pre, transcript.text, 
-                      :id => "transcript-#{transcript.id}", :style => "display:none") %>   
+                      :id => "transcript-#{transcript.id}", 
+                      :style => "display:none") %>   
               </li>
             <% end %>
           </ul>

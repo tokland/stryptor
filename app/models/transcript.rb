@@ -9,7 +9,7 @@ class Transcript < ActiveRecord::Base
   scope :by_version, proc { |key| order(Transcript[:created_at].send(key)) }
 
   def self.find_by_params!(params)
-    strip = Strip.find_by_param!(params[:strip_id])
+    strip = Strip.find_by_params!(params)
     strip.transcripts.find(params[:id])
   end
   

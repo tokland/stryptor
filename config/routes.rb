@@ -7,7 +7,7 @@ Rails.application.routes.draw do
   get '/auth/failure' => 'sessions#failure'
 
   resources :strip_collections, :path => "" do  
-    resources :strips, :path => "" do
+    resources :strips, :only => [:index, :show], :path => "" do
       collection { get :random }
       resources :transcripts, :only => [:show, :create]
     end

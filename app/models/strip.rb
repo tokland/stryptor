@@ -7,6 +7,7 @@ class Strip < ActiveRecord::Base
     :default_url => proc { |image| image.instance.image_url }
   validates_attachment :image, content_type: {content_type: ["image/jpeg"]}
   validates :strip_collection, presence: true
+  validates :code, uniqueness: {scope: :strip_collection_id}
   scope :by_code, proc { |key| order(Strip[:code].send(key)) }
   
   def self.random
