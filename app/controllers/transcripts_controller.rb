@@ -16,7 +16,7 @@ class TranscriptsController < ApplicationController
       redirect_to(strip_path(@transcript.strip))
     else
       error_message = @transcript.errors.full_messages.to_sentence
-      redirect_to(strip_path(@transcript.strip), :alert => "Error saving: #{error_message}")
+      redirect_to(strip_path(@transcript.strip), :alert => error_message)
     end
   end
 end

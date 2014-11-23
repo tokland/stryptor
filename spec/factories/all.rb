@@ -3,6 +3,7 @@ FactoryGirl.define do
     sequence(:code, &:to_s)
     name { |collection| collection.code }
     footer "<p>Footer</p>"
+    image_url "http://server.org/:code.jpg"
   end
 
   factory :strip do

@@ -75,6 +75,13 @@
   </div>
 
   <div id="footer">
+    <span class="info">
+      [
+        Usuarios=<%= User.count %>, 
+        Transcritas=<%= Strip.where(Strip[:transcripts_count] ^ 0).count %>/<%= Strip.count %> 
+        
+      ]
+    </span>
     <%= @strip.strip_collection.footer.try(:html_safe) %>
   </div>
 </div>

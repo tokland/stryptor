@@ -2,19 +2,18 @@ class ApplicationController < ActionController::Base
   extend Memoist
   
   protect_from_forgery with: :exception
+  before_filter :load_current_user
+  attr_reader :current_user
 
   helper_method :current_user
   helper_method :user_signed_in?
   helper_method :strip_path
-
-  private
   
-  def current_user
-    if session[:user_id]
-      User.find(session[:user_id])
-    end
+  private
+
+  def load_current_user
+    @current_user = session[:user_id] ? User.find_by_id(session[:user_id]) : nil
   end
-  memoize :current_user
 
   def user_signed_in?
     !!current_user

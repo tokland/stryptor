@@ -15,7 +15,7 @@ describe StripsController, :type => :controller do
     expect(response).to render_template(:show)
   end
 
-  it "renders the :random view" do
+  it "redirects to a random strip" do
     strip = FactoryGirl.create(:strip)
     get :random, :strip_collection_id => strip.strip_collection.code
     expect(response).to render_template(:show)

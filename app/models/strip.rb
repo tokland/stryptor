@@ -7,7 +7,7 @@ class Strip < ActiveRecord::Base
     :default_url => proc { |image| image.instance.image_url }
   validates_attachment :image, content_type: {content_type: ["image/jpeg"]}
   validates :strip_collection, presence: true
-  validates :code, uniqueness: {scope: :strip_collection_id}
+  validates :code, presence: true, uniqueness: {scope: :strip_collection_id}
   scope :by_code, proc { |key| order(Strip[:code].send(key)) }
   
   def self.random
@@ -29,9 +29,7 @@ class Strip < ActiveRecord::Base
   end
 
   def image_url
-    if strip_collection.image_url
-      strip_collection.image_url % {code: code}
-    end
+    strip_collection.image_url % {code: code}
   end
 
   def current_transcript
@@ -43,7 +41,7 @@ class Strip < ActiveRecord::Base
   end
   
   def title
-    strip_collection.name + " " + code
+    "%s %s" % [strip_collection.name, code]
   end
   
   def pagination
@@ -51,7 +49,7 @@ class Strip < ActiveRecord::Base
       index: position,
       total: Strip.count,
       first: Strip.by_code(:asc).first,
-      last:  Strip.by_code(:desc).first,
+      last: Strip.by_code(:desc).first,
       previous: Strip.by_code(:desc).where(Strip[:code] < code).first,
       next: Strip.by_code(:asc).where(Strip[:code] > code).first,
     )
