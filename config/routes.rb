@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  root :to => "strips#index"
+  root :to => "application#index"
   
   get '/signin' => 'sessions#new', :as => :signin
   get '/signout' => 'sessions#destroy', :as => :signout

@@ -77,8 +77,8 @@
   <div id="footer">
     <span class="info">
       [
-        Usuarios=<%= User.count %>, 
-        Transcritas=<%= Strip.where(Strip[:transcripts_count] ^ 0).count %>/<%= Strip.count %> 
+        Usuarios: <%= User.count %>, 
+        Transcritas: <%= Strip.with_transcriptions.count %>/<%= Strip.count %> 
         
       ]
     </span>

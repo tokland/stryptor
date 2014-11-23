@@ -9,6 +9,11 @@ class ApplicationController < ActionController::Base
   helper_method :user_signed_in?
   helper_method :strip_path
   
+  def index
+    collection = StripCollection.first!
+    redirect_to(strip_path(collection.strips.by_code(:asc).first!))
+  end
+  
   private
 
   def load_current_user

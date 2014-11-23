@@ -9,9 +9,11 @@ class Strip < ActiveRecord::Base
   validates :strip_collection, presence: true
   validates :code, presence: true, uniqueness: {scope: :strip_collection_id}
   scope :by_code, proc { |key| order(Strip[:code].send(key)) }
+  scope :with_transcriptions, proc { where(Strip[:transcripts_count] ^ 0) }
+  scope :without_transcriptions, proc { where(Strip[:transcripts_count] == 0) }
   
   def self.random
-    Strip.where(transcripts_count: 0).sample ||
+    Strip.without_transcriptions.sample ||
       Strip.by_code(:asc).offset(rand(Strip.count)).first!
   end
   
