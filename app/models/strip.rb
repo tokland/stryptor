@@ -38,7 +38,7 @@ class Strip < ActiveRecord::Base
   end
 
   def image_url
-    strip_collection.image_url % {code: code.gsub(/-/, "_")}
+    strip_collection.image_url % {code: code}
   end
 
   def current_transcript

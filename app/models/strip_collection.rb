@@ -4,7 +4,6 @@ class StripCollection < ActiveRecord::Base
   
   validates :code, presence: true, uniqueness: true
   validates :image_url, presence: true
-  validates_attachment :image, content_type: {content_type: ["image/png", "image/gif"]} 
   
   def self.find_by_param!(value)
     StripCollection.find_by!(code: value)

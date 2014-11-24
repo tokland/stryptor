@@ -24,10 +24,7 @@ ActiveRecord::Schema.define(version: 20141124181501) do
     t.datetime "updated_at"
     t.text     "footer"
     t.string   "image_url"
-    t.string   "image_file_name"
-    t.string   "image_content_type"
-    t.integer  "image_file_size"
-    t.datetime "image_updated_at"
+    t.string   "icon_url"
   end
 
   create_table "strips", force: true do |t|
