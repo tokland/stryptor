@@ -2,8 +2,8 @@ class Transcript < ActiveRecord::Base
   belongs_to :strip, counter_cache: true
   belongs_to :user
   
-  validates :text, presence: true
   validates :strip, presence: true
+  validates :text, presence: true
   validates :user, presence: true
   
   scope :by_version, proc { |key| order(Transcript[:created_at].send(key)) }

@@ -5,9 +5,11 @@ class Strip < ActiveRecord::Base
   has_many :transcripts, inverse_of: :strip, dependent: :nullify 
   has_attached_file :image, 
     :default_url => proc { |image| image.instance.image_url }
+    
   validates_attachment :image, content_type: {content_type: ["image/jpeg"]}
   validates :strip_collection, presence: true
   validates :code, presence: true, uniqueness: {scope: :strip_collection_id}
+  
   scope :by_code, proc { |key| order(Strip[:code].send(key)) }
   scope :with_transcriptions, proc { where(Strip[:transcripts_count] ^ 0) }
   scope :without_transcriptions, proc { where(Strip[:transcripts_count] == 0) }
@@ -20,6 +22,11 @@ class Strip < ActiveRecord::Base
   def self.find_by_param!(value)
     Strip.find_by!(code: value)
   end
+  
+  def self.first_by_params!(params)
+    collection = StripCollection.find_by_param!(params[:strip_collection_id])
+    collection.strips.by_code(:asc).first!
+  end
 
   def self.find_by_params!(params)
     collection = StripCollection.find_by_param!(params[:strip_collection_id])
@@ -31,7 +38,7 @@ class Strip < ActiveRecord::Base
   end
 
   def image_url
-    strip_collection.image_url % {code: code}
+    strip_collection.image_url % {code: code.gsub(/-/, "_")}
   end
 
   def current_transcript

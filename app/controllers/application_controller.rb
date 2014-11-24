@@ -1,13 +1,9 @@
 class ApplicationController < ActionController::Base
   extend Memoist
-  
   protect_from_forgery with: :exception
   before_filter :load_current_user
   attr_reader :current_user
-
-  helper_method :current_user
-  helper_method :user_signed_in?
-  helper_method :strip_path
+  helper_method :current_user, :user_signed_in?, :strip_path
   
   def index
     collection = StripCollection.first!
@@ -25,7 +21,7 @@ class ApplicationController < ActionController::Base
   end
 
   def authenticate_user!
-    unless current_user
+    unless user_signed_in?
       redirect_to(root_url, :alert => 'You need to sign in for access to this page')
     end
   end

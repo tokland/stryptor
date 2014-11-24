@@ -1,7 +1,7 @@
 class StripsController < ApplicationController
   def index
-    collection = StripCollection.find_by_param!(params[:strip_collection_id])
-    redirect_to(strip_path(collection.strips.by_code(:asc).first!))
+    strip = Strip.first_by_params!(params)
+    redirect_to(strip_path(strip))
   end
   
   def show
