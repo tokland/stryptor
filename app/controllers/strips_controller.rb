@@ -5,18 +5,12 @@ class StripsController < ApplicationController
   end
   
   def show
-    render_strip(Strip.find_by_params!(params))
+    @strip = Strip.find_by_params!(params)
+    @pagination = @strip.pagination
+    render(:show)
   end
   
   def random
-    render_strip(Strip.random)
-  end
-  
-private
-  
-  def render_strip(strip)
-    @strip = strip
-    @pagination = @strip.pagination
-    render(:show)
+    redirect_to(strip_path(Strip.random))
   end
 end
