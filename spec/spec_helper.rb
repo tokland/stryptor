@@ -14,10 +14,25 @@
 # users commonly want.
 #
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
+
+
+require 'capybara'
+require 'database_cleaner'
+require 'capybara/dsl'
+require 'capybara/webkit'
+
+Capybara.configure do |c|
+  c.javascript_driver = :webkit
+  c.default_driver = :webkit
+  c.app_host = "http://localhost:3000"
+end
+
 RSpec.configure do |config|
   # rspec-expectations config goes here. You can use an alternate
   # assertion/expectation library such as wrong or the stdlib/minitest
   # assertions if you prefer.
+  config.include Capybara::DSL
+  
   config.expect_with :rspec do |expectations|
     # This option will default to `true` in RSpec 4. It makes the `description`
     # and `failure_message` of custom matchers include text for helper methods
