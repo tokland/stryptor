@@ -2,7 +2,7 @@ class Strip < ActiveRecord::Base
   Pagination = Struct.new(:index, :total, :first, :previous, :next, :last)
 
   belongs_to :strip_collection
-  has_many :transcripts, inverse_of: :strip, dependent: :nullify 
+  has_many :transcripts, inverse_of: :strip, dependent: :destroy 
   has_attached_file :image, 
     :default_url => proc { |image| image.instance.image_url }
     
@@ -54,13 +54,14 @@ class Strip < ActiveRecord::Base
   end
   
   def pagination
+    strips = strip_collection.strips
     Pagination.from_hash(
       index: position,
-      total: Strip.count,
-      first: Strip.by_code(:asc).first,
-      last: Strip.by_code(:desc).first,
-      previous: Strip.by_code(:desc).where(Strip[:code] < code).first,
-      next: Strip.by_code(:asc).where(Strip[:code] > code).first,
+      total: strips.count,
+      first: strips.by_code(:asc).first,
+      last: strips.by_code(:desc).first,
+      previous: strips.by_code(:desc).where(Strip[:code] < code).first,
+      next: strips.by_code(:asc).where(Strip[:code] > code).first,
     )
   end
 end

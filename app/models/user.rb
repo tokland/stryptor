@@ -1,5 +1,5 @@
 class User < ActiveRecord::Base
-  has_many :transcripts, inverse_of: :user, dependent: :nullify
+  has_many :transcripts, inverse_of: :user, dependent: :destroy
   
   def self.create_with_omniauth!(auth)
     provider_attrs = auth.slice(:provider, :uid)

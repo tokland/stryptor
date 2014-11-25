@@ -1,5 +1,5 @@
 class StripCollection < ActiveRecord::Base
-  has_many :strips, dependent: :nullify
+  has_many :strips, dependent: :destroy
   has_attached_file :image
   
   validates :code, presence: true, uniqueness: true
