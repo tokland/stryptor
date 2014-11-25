@@ -27,3 +27,13 @@ RSpec.configure do |config|
   
   config.include ExpectOneLinerSyntax
 end
+
+RSpec::Matchers.define :be_in do |expected|
+  match do |actual|
+    expected.include?(actual)
+  end
+  
+  failure_message do |actual|
+    "expected that #{actual} would be one value of #{expected}"
+  end
+end

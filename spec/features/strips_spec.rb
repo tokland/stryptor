@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe 'Strip pages', :type => :feature, :js => true do
-  before :each do
+  before do
     collection = FactoryGirl.create(:strip_collection, {
       :code => "collection",
       :name => "Collection",
@@ -10,6 +10,7 @@ describe 'Strip pages', :type => :feature, :js => true do
     })
     FactoryGirl.create(:strip, :strip_collection => collection, :code => "001", :position => 0)
     FactoryGirl.create(:strip, :strip_collection => collection, :code => "002", :position => 1)
+    FactoryGirl.create(:strip, :strip_collection => collection, :code => "003", :position => 2)
     
     collection2 = FactoryGirl.create(:strip_collection, :name => "Another collection")
     FactoryGirl.create(:strip, :strip_collection => collection2, :code => "001", :position => 0)
@@ -45,7 +46,7 @@ describe 'Strip pages', :type => :feature, :js => true do
     end
     
     it 'shows title <collection-name> <script-code> (<position> of <total>)' do
-      expect(page).to have_selector('#ctitle', :text => "Collection 001 (1 de 2)")
+      expect(page).to have_selector('#ctitle', :text => "Collection 001 (1 de 3)")
     end
     
     it 'shows collection footer' do
@@ -64,7 +65,7 @@ describe 'Strip pages', :type => :feature, :js => true do
     end
     
     it 'shows title <collection-name> <script-code> (<position> of <total>)' do
-      expect(page).to have_selector('#ctitle', :text => "Collection 001 (1 de 2)")
+      expect(page).to have_selector('#ctitle', :text => "Collection 001 (1 de 3)")
     end
     
     it 'shows collection footer' do
@@ -92,7 +93,8 @@ describe 'Strip pages', :type => :feature, :js => true do
 
       describe 'Random clicked' do
         before { page.click_link('Aleatorio') }
-        it { expects(page.current_path).to eq("/collection/001").or eq("/collection/002") } 
+        it { expects(page.current_path).to be_in(["/collection/001", 
+              "/collection/002", "/collection/003"]) } 
       end
 
       describe 'Next clicked' do
@@ -102,7 +104,7 @@ describe 'Strip pages', :type => :feature, :js => true do
       
       describe 'Last clicked' do
         before { page.click_link('>|') }
-        it { expects(page.current_path).to eq("/collection/002") } 
+        it { expects(page.current_path).to eq("/collection/003") } 
       end
     end
     
@@ -142,6 +144,40 @@ describe 'Strip pages', :type => :feature, :js => true do
             expect(page).to have_link("Historial")
           end    
         end
+      end
+    end
+  end
+
+  describe 'Detail second strip page' do
+    before do
+      page.visit '/collection/002'
+    end
+  
+    describe 'Navigation links' do
+      describe 'First clicked' do
+        before { page.click_link('|<') }
+        it { expects(page.current_path).to eq("/collection/001") } 
+      end
+
+      describe 'Previous clicked' do
+        before { page.click_link('< Anterior') }
+        it { expects(page.current_path).to eq("/collection/001") } 
+      end
+
+      describe 'Random clicked' do
+        before { page.click_link('Aleatorio') }
+        it { expects(page.current_path).to be_in(["/collection/001", 
+              "/collection/002", "/collection/003"]) } 
+      end
+
+      describe 'Next clicked' do
+        before { page.click_link('Siguiente >') }
+        it { expects(page.current_path).to eq("/collection/003") } 
+      end
+      
+      describe 'Last clicked' do
+        before { page.click_link('>|') }
+        it { expects(page.current_path).to eq("/collection/003") } 
       end
     end
   end

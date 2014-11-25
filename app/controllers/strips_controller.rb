@@ -11,6 +11,7 @@ class StripsController < ApplicationController
   end
   
   def random
-    redirect_to(strip_path(Strip.random))
+    collection = StripCollection.find_by_param!(params[:strip_collection_id])
+    redirect_to(strip_path(collection.strips.random))
   end
 end
