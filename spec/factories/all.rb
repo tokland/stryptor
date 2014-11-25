@@ -1,4 +1,11 @@
 FactoryGirl.define do
+  factory :user do
+    name "Name"
+    email "Email"
+    provider "facebook"
+    sequence(:uid, &:to_s) 
+  end
+  
   factory :strip_collection do
     sequence(:code, &:to_s)
     name { |collection| collection.code }
@@ -9,7 +16,6 @@ FactoryGirl.define do
   factory :strip do
     sequence(:position)
     sequence(:code, &:to_s)
-    image File.open(Rails.root.join("spec/fixtures/mafalda-01_001.jpg"))
     strip_collection
   end
 end
