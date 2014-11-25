@@ -1,7 +1,7 @@
 FactoryGirl.define do
   factory :user do
     name "Name"
-    email "Email"
+    email "user@server.org"
     provider "facebook"
     sequence(:uid, &:to_s) 
   end
@@ -18,4 +18,10 @@ FactoryGirl.define do
     sequence(:code, &:to_s)
     strip_collection
   end
+  
+  factory :transcript do
+    text "Text"
+    user
+    strip
+  end  
 end

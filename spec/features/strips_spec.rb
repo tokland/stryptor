@@ -2,26 +2,29 @@ require 'rails_helper'
 
 describe 'Strip pages', :type => :feature, :js => true do
   before do
+    @user = FactoryGirl.create(:user, :name => "John Smith", :email => "john@smith.com")
+    
     collection = FactoryGirl.create(:strip_collection, {
       :code => "collection",
       :name => "Collection",
       :footer => "My footer",
       :image_url => "http://server/%{code}.jpg"
     })
-    FactoryGirl.create(:strip, :strip_collection => collection, :code => "001", :position => 0)
-    FactoryGirl.create(:strip, :strip_collection => collection, :code => "002", :position => 1)
-    FactoryGirl.create(:strip, :strip_collection => collection, :code => "003", :position => 2)
+    @strips = [
+      FactoryGirl.create(:strip, :strip_collection => collection, :code => "001", :position => 0),
+      FactoryGirl.create(:strip, :strip_collection => collection, :code => "002", :position => 1),
+      FactoryGirl.create(:strip, :strip_collection => collection, :code => "003", :position => 2),
+    ] 
+    FactoryGirl.create(:transcript, :user => @user, :strip => @strips[2], :text => "003 text")
     
     collection2 = FactoryGirl.create(:strip_collection, :name => "Another collection")
     FactoryGirl.create(:strip, :strip_collection => collection2, :code => "001", :position => 0)
-    
-    @user = FactoryGirl.create(:user, :name => "John Smith", :email => "john@smith.com")
   end
   
   describe 'Homepage' do
     before { page.visit '/' }
     
-    it 'redirects to the first strip of the first collection on homepage' do
+    it 'redirects to the first strip of the first collection' do
       expect(page.current_path).to eq("/collection/001")
     end
   end
@@ -31,6 +34,22 @@ describe 'Strip pages', :type => :feature, :js => true do
     
     it 'redirects to the first strip' do
       expect(page.current_path).to eq("/collection/001")
+    end
+  end
+
+  describe 'Detail page of strip with transcripts' do
+    before { page.visit '/collection/003' }
+
+    it 'shows the history link' do
+      expect(page).to have_link("Historial")
+    end
+
+    it 'shows the strip image' do
+      expect(page).to have_selector("img[src='http://server/003.jpg']")
+    end
+    
+    it 'shows the text' do
+      expect(page).to have_selector('#transcript pre', text: "003 text")
     end
   end
   
@@ -54,7 +73,7 @@ describe 'Strip pages', :type => :feature, :js => true do
     end
   end
 
-  describe 'Detail with logged user' do
+  describe 'Detail of strip without transcripts with logged user' do
     before do
       page.set_rack_session(:user_id => @user.id)
       page.visit '/collection/001'
@@ -78,6 +97,14 @@ describe 'Strip pages', :type => :feature, :js => true do
 
     it 'does not show the history link' do
       expect(page).not_to have_link("Historial")
+    end
+    
+    describe 'Logout' do
+      before { page.click_link('Salir') }
+
+      it 'shows link to FB auth' do
+        expect(page).to have_selector('#user-info', :text => "Entrar")
+      end
     end
     
     describe 'Navigation links' do
@@ -114,7 +141,7 @@ describe 'Strip pages', :type => :feature, :js => true do
       describe 'Click [edit] button' do
         before { page.click_link("Editar") }
         
-        it "enabled edit mode" do
+        it "enables edit mode" do
           expect(page).to have_selector('#new_transcript') 
           expect(page).to have_selector('.toggle-edit', text: "Cancelar", visible: true)
         end
@@ -122,14 +149,14 @@ describe 'Strip pages', :type => :feature, :js => true do
         describe "Click [cancel] button" do
           before { page.click_link("Cancelar") }
           
-          it 'returns to show-only mode' do
+          it 'returns to show mode' do
             expect(page).not_to have_selector('#new_transcript', visible: true)
             expect(page).not_to have_selector('.toggle-edit', text: "Cancelar", visible: true)
             expect(page).to have_selector('.toggle-edit', text: "Editar", visible: true)
           end
         end
         
-        describe 'Write transcription text and click save button' do
+        describe 'Submit new transcription' do
           before do
             page.fill_in("transcript[text]", :with => "Strip text")
             page.click_button("Guardar")

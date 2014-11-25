@@ -28,7 +28,7 @@
   </div>
   
   <div id="transcript" class="<%= current_user ? 'editable' : '' %>">
-    <div class="toggle-edit">
+    <span class="toggle-edit">
       <%= content_tag(:pre, @strip.current_text, class: "text") %>
      
       <% if user_signed_in? %>
@@ -36,7 +36,8 @@
       <% else %>
         <%= link_to "Entrar para editar", signin_path %>
       <% end %>
-    </div>
+      <%= link_to_history(@strip) %>
+    </span>
 
     <% if user_signed_in? %>
       <%= form_for @strip.transcripts.new(:text => @strip.current_transcript.try(:text)), 
@@ -47,14 +48,12 @@
         <br />
         <%= form.submit "Guardar" %>
         <%= link_to "Cancelar", "#", :"data-toggle" => ".toggle-edit" %>
+        <%= link_to_history(@strip) %>
       <% end %>
     <% end %>
 
-    <% if (tcount = @strip.transcripts.count) > 0 %>
+    <% if @strip.transcripts.count > 0 %>
       <div id="history">
-        <%= link_to "Historial" % tcount, "javascript:void()",
-              :accesskey => "h", :"data-toggle" => "#transcript-history" %>
-        
         <div id="transcript-history" style="display: none">
           <ul>
             <% @strip.transcripts.includes(:user).by_version(:asc).map.with_index.reverse_each do |transcript, idx| %>
@@ -77,10 +76,7 @@
 
   <div id="footer">
     <span class="info">
-      (
-        Usuarios: <%= User.count %>, 
-        Transcritas: <%= Strip.with_transcriptions.count %>/<%= Strip.count %> 
-      )
+      Tiras transcritas: <%= Strip.with_transcriptions.count %>/<%= Strip.count %> 
     </span>
     <%= @strip.strip_collection.footer.try(:html_safe) %>
   </div>

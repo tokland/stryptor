@@ -3,6 +3,7 @@ require 'database_cleaner'
 require 'capybara/dsl'
 require 'capybara/webkit'
 require 'rack_session_access/capybara'
+require 'rails_helper'
 
 Capybara.configure do |config|
   config.javascript_driver = :webkit
@@ -15,6 +16,7 @@ module ExpectOneLinerSyntax
 end
 
 RSpec.configure do |config|
+  config.include Rails.application.routes.url_helpers
   config.include Capybara::DSL
   
   config.expect_with :rspec do |expectations|

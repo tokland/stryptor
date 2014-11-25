@@ -18,6 +18,6 @@ describe StripsController, :type => :controller do
   it "redirects to a random strip" do
     strip = FactoryGirl.create(:strip)
     get :random, :strip_collection_id => strip.strip_collection.code
-    expect(response).to render_template(:show)
+    expect(response).to redirect_to(polymorphic_path([strip.strip_collection, strip]))
   end
 end
