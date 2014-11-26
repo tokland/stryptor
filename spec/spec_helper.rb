@@ -6,7 +6,7 @@ require 'rack_session_access/capybara'
 require 'rails_helper'
 
 Capybara.configure do |config|
-  config.javascript_driver = :webkit
+  config.javascript_driver = (ENV["CAPYBARA_DRIVER"] || :webkit).to_sym
 end
 
 module ExpectOneLinerSyntax

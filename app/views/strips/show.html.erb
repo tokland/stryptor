@@ -1,7 +1,7 @@
-<%= content_for(:head_title, @strip.title) %>
-<%= content_for(:favicon, @strip.strip_collection.icon_url) %>
+<%= content_for :head_title, @strip.title %>
+<%= content_for :favicon, @strip.strip_collection.icon_url %>
 
-<div id="middleContainer" class="box">
+<div id="middle-container" class="box">
   <div id="user-info">
     <% if user_signed_in? %>
       <%= current_user.name %> [<%= link_to "Salir", signout_path %>]
@@ -15,7 +15,7 @@
     (<%= @pagination.index + 1 %> de <%= @pagination.total %>)
   </div>
   
-  <ul class="comicNav">
+  <ul class="comic-nav">
     <li><%= link_to "|<", strip_path(@pagination.first), :accesskey => "f" %></li>
     <li><%= link_to "< Anterior", strip_path(@pagination.previous), :accesskey => "p" %></li>
     <li><%= link_to "Aleatorio", random_path_for_collection_strip(@strip), :accesskey => "r" %></li>
@@ -28,7 +28,7 @@
   </div>
   
   <div id="transcript" class="<%= current_user ? 'editable' : '' %>">
-    <span class="toggle-edit">
+    <div class="toggle-edit">
       <%= content_tag(:pre, @strip.current_text, class: "text") %>
      
       <% if user_signed_in? %>
@@ -37,16 +37,15 @@
         <%= link_to "Entrar para editar", signin_path %>
       <% end %>
       <%= link_to_history(@strip) %>
-    </span>
+    </div>
 
     <% if user_signed_in? %>
-      <%= form_for @strip.transcripts.new(:text => @strip.current_transcript.try(:text)), 
-            :url => strip_collection_strip_transcripts_path(@strip.strip_collection, @strip),
+      <%= form_for @strip.transcripts.new(:text => @strip.current_transcript.maybe.text.value), 
+            :url => polymorphic_path([@strip.strip_collection, @strip, :transcripts]),
             :html => {:class => "toggle-edit", :style => "display: none"} do |form|%>
         <%= form.text_area :text %>
-        
-        <br />
         <%= form.submit "Guardar" %>
+        
         <%= link_to "Cancelar", "#", :"data-toggle" => ".toggle-edit" %>
         <%= link_to_history(@strip) %>
       <% end %>
@@ -56,7 +55,7 @@
       <div id="history">
         <div id="transcript-history" style="display: none">
           <ul>
-            <% @strip.transcripts.includes(:user).by_version(:asc).map.with_index.reverse_each do |transcript, idx| %>
+            <% @strip.transcripts.joins(:user).by_version(:asc).map.with_index.reverse_each do |transcript, idx| %>
               <li>
                 <%= idx + 1 %>.
                 <%= transcript.user.name %> -
@@ -76,7 +75,10 @@
 
   <div id="footer">
     <span class="info">
-      Tiras transcritas: <%= Strip.with_transcriptions.count %>/<%= Strip.count %> 
+      Tiras transcritas:
+      <%= @strip.strip_collection.strips.as do |strips| %>
+        <%= strips.with_transcriptions.count %>/<%= strips.count %> 
+      <% end %>
     </span>
     <%= @strip.strip_collection.footer.try(:html_safe) %>
   </div>

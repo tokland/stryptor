@@ -49,7 +49,7 @@ img{
 	-moz-border-radius: 12px;
 }
 
-#middleContainer {
+#middle-container {
 	width: 880px;
 	margin: 5px  auto;
 	padding: 10px 0;
@@ -61,7 +61,7 @@ img{
     font-weight: 800;
 }
 
-ul.comicNav {
+ul.comic-nav {
 	padding:0;
 	list-style-type:none;
 	font-variant:small-caps;
@@ -76,11 +76,11 @@ ul.comicNav {
   font-size: 16px;
 }
 
-ul.comicNav li {
+ul.comic-nav li {
 	display: inline;
 }
 
-ul.comicNav  li a {
+ul.comic-nav li a {
 	background-color:#6E7B91;
 	color: #FFF;
 	border: 1.5px solid #333;
@@ -97,7 +97,7 @@ ul.comicNav  li a {
 	-webkit-box-shadow: 0 0 5px 0 gray;	
 }
 
-ul.comicNav a.selected {
+ul.comic-nav a.selected {
 	background-color: #DDD;
 	color: #6E7B91;
 	box-shadow: none;
@@ -105,7 +105,7 @@ ul.comicNav a.selected {
 	-webkit-box-shadow: none;
 }
 
-ul.comicNav a:hover {
+ul.comic-nav a:hover {
 	background-color: #FFF;
 	color: #6E7B91;
 	box-shadow: none;
@@ -113,7 +113,7 @@ ul.comicNav a:hover {
 	-webkit-box-shadow: none;
 }
 
-#middleContainer { position:relative; left:50%; margin-left:-390px; }
+#middle-container { position:relative; left:50%; margin-left:-390px; }
 #comic .comic { position:absolute; }
 #comic .panel, #comic .cover, #comic .panel img { position:absolute; }
 #comic .cover { z-index:10; }

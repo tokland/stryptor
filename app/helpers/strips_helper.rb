@@ -4,10 +4,9 @@ module StripsHelper
   end
   
   def link_to_history(strip)
-    tcount = strip.transcripts.count
-    if tcount > 0
-      link_to "| Historial" % tcount, "javascript:void()",
-        :accesskey => "h", :"data-toggle" => "#transcript-history"
+    if strip.transcripts.count > 0
+      "| ".html_safe + link_to("Historial", "javascript:void()",
+        :accesskey => "h", :"data-toggle" => "#transcript-history")
     end
   end
 end
