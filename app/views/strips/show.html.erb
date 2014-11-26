@@ -2,7 +2,7 @@
 <%= content_for :favicon, @strip.strip_collection.icon_url %>
 
 <div id="middle-container" class="box">
-  <div id="search">
+  <div id="search" style="display: none">
     <%= form_tag(search_strip_collection_strips_path, 
           {:method => :get, :enforce_utf8 => false}) do %>
       <%= text_field_tag :text, params[:text] %>
