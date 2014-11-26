@@ -2,6 +2,14 @@
 <%= content_for :favicon, @strip.strip_collection.icon_url %>
 
 <div id="middle-container" class="box">
+  <div id="search">
+    <%= form_tag(search_strip_collection_strips_path, 
+          {:method => :get, :enforce_utf8 => false}) do %>
+      <%= text_field_tag :text, params[:text] %>
+      <%= submit_tag 'Buscar', {:name => nil} %>
+    <% end %>
+  </div>
+  
   <div id="user-info">
     <% if user_signed_in? %>
       <%= current_user.name %> [<%= link_to "Salir", signout_path %>]
@@ -29,7 +37,7 @@
   
   <div id="transcript" class="<%= current_user ? 'editable' : '' %>">
     <div class="toggle-edit">
-      <%= content_tag(:pre, @strip.current_text, class: "text") %>
+      <%= content_tag(:pre, @strip.text, class: "text") %>
      
       <% if user_signed_in? %>
         <%= link_to "Editar", "#", :accesskey => "e", :"data-toggle" => ".toggle-edit" %>
@@ -40,13 +48,13 @@
     </div>
 
     <% if user_signed_in? %>
-      <%= form_for @strip.transcripts.new(:text => @strip.current_transcript.maybe.text.value), 
+      <%= form_for @strip.transcripts.new(:text => @strip.text), 
             :url => polymorphic_path([@strip.strip_collection, @strip, :transcripts]),
             :html => {:class => "toggle-edit", :style => "display: none"} do |form|%>
         <%= form.text_area :text %>
         <%= form.submit "Guardar" %>
         
-        <%= link_to "Cancelar", "#", :"data-toggle" => ".toggle-edit" %>
+        <%= link_to "Cancelar", "#", :accesskey => "c", :"data-toggle" => ".toggle-edit" %>
         <%= link_to_history(@strip) %>
       <% end %>
     <% end %>
@@ -55,11 +63,13 @@
       <div id="history">
         <div id="transcript-history" style="display: none">
           <ul>
-            <% @strip.transcripts.joins(:user).by_version(:asc).map.with_index.reverse_each do |transcript, idx| %>
+            <% @strip.transcripts.joins(:user).by_version(:asc).
+                 map.with_index.reverse_each do |transcript, idx| %>
               <li>
                 <%= idx + 1 %>.
                 <%= transcript.user.name %> -
-                <%= transcript.created_at.utc.strftime("%d/%m/%Y %H:%M UTC") %> -
+                <%= transcript.created_at.utc.strftime("%d/%m/%Y %H:%M UTC") %>
+                -
                 <%= link_to "texto", "javascript:void()", 
                       :"data-toggle" => "#transcript-#{transcript.id}" %>
                 <%= content_tag(:pre, transcript.text, 
@@ -80,6 +90,7 @@
         <%= strips.with_transcriptions.count %>/<%= strips.count %> 
       <% end %>
     </span>
-    <%= @strip.strip_collection.footer.try(:html_safe) %>
+    
+    <%= @strip.strip_collection.footer.maybe.html_safe.value %>
   </div>
 </div>

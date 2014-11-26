@@ -1,4 +1,5 @@
 class Strip < ActiveRecord::Base
+  include PgSearch
   Pagination = Struct.new(:index, :total, :first, :previous, :next, :last)
 
   belongs_to :strip_collection
@@ -6,13 +7,16 @@ class Strip < ActiveRecord::Base
   has_attached_file :image, 
     :default_url => proc { |image| image.instance.image_url }
     
-  validates_attachment :image, content_type: {content_type: ["image/jpeg"]}
   validates :strip_collection, presence: true
+  validates :position, presence: true, uniqueness: {scope: :strip_collection_id} 
   validates :code, presence: true, uniqueness: {scope: :strip_collection_id}
+  validates_attachment :image, content_type: {content_type: ["image/jpeg"]}
   
   scope :by_code, proc { |key| order(Strip[:code].send(key)) }
   scope :with_transcriptions, proc { where(Strip[:transcripts_count] ^ 0) }
   scope :without_transcriptions, proc { where(Strip[:transcripts_count] == 0) }
+
+  pg_search_scope :search, :against => :text, :ignoring => :accents
   
   def self.random
     Strip.without_transcriptions.sample ||
@@ -43,10 +47,6 @@ class Strip < ActiveRecord::Base
 
   def current_transcript
     transcripts.order(Transcript[:created_at].desc).first    
-  end
-  
-  def current_text
-    current_transcript.maybe.text.value
   end
   
   def title

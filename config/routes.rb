@@ -8,7 +8,10 @@ Rails.application.routes.draw do
 
   resources :strip_collections, :path => "" do  
     resources :strips, :only => [:index, :show], :path => "" do
-      collection { get :random }
+      collection do
+        get :random
+        get :search
+      end
       resources :transcripts, :only => [:show, :create]
     end
   end

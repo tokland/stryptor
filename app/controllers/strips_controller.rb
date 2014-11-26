@@ -14,4 +14,8 @@ class StripsController < ApplicationController
     collection = StripCollection.find_by_param!(params[:strip_collection_id])
     redirect_to(strip_path(collection.strips.random))
   end
+  
+  def search
+    @strips = Strip.search(params[:text])
+  end
 end

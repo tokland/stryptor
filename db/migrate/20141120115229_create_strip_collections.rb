@@ -10,9 +10,4 @@ class CreateStripCollections < ActiveRecord::Migration
     
     add_column :strips, :strip_collection_id, :integer, references: :strip_collections
   end
-  
-  def data
-    collection = StripCollection.create!(:name => "Mafalda", :code => "mafalda")
-    Strip.update_all(:strip_collection_id => collection.id) 
-  end
 end

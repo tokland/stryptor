@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141124181501) do
+ActiveRecord::Schema.define(version: 20141126201555) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -39,6 +39,7 @@ ActiveRecord::Schema.define(version: 20141124181501) do
     t.datetime "updated_at"
     t.integer  "strip_collection_id"
     t.integer  "transcripts_count",   default: 0
+    t.text     "text"
   end
 
   create_table "transcripts", force: true do |t|

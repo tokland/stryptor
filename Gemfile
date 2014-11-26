@@ -24,6 +24,7 @@ gem 'memoist'
 gem 'jquery-ui-rails'
 gem 'migration_data'
 gem 'exception_notification'
+gem 'pg_search'
 
 group :development do
   gem 'better_errors'
@@ -33,9 +34,9 @@ group :development do
   gem 'guard-rspec'
   gem 'quiet_assets'
   gem 'rails_layout'
-  gem 'rb-fchange', :require=>false
-  gem 'rb-fsevent', :require=>false
-  gem 'rb-inotify', :require=>false
+  gem 'rb-fchange', :require => false
+  gem 'rb-fsevent', :require => false
+  gem 'rb-inotify', :require => false
   gem 'heroku'
 end
 

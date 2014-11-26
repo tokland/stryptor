@@ -2,12 +2,18 @@ class Transcript < ActiveRecord::Base
   belongs_to :strip, counter_cache: true
   belongs_to :user
   
+  after_save :update_strip_text
+  
   validates :strip, presence: true
   validates :text, presence: true
   validates :user, presence: true
   
   scope :by_version, proc { |key| order(Transcript[:created_at].send(key)) }
 
+  def update_strip_text
+    strip.update_attributes(:text => text)
+  end
+  
   def self.find_by_params!(params)
     strip = Strip.find_by_params!(params)
     strip.transcripts.find(params[:id])

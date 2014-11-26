@@ -36,6 +36,13 @@ describe 'Strip pages', :type => :feature, :js => true do
       expect(page.current_path).to eq("/collection/001")
     end
   end
+  
+#  describe 'Login' do
+#    before do 
+#      page.visit '/collection/001'
+#      click_link 'Entrar'
+#    end
+#  end
 
   describe 'Detail page of strip with transcripts' do
     before { page.visit '/collection/003' }
