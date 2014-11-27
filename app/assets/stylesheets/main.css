@@ -165,3 +165,7 @@ div.ui-tooltip {
   margin-left: 50px;
   margin-top: 20px;
 }
+
+nav.pagination {
+  padding: 5px;
+}

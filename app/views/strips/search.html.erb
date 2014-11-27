@@ -6,17 +6,23 @@
     <%= @strips.size %> tira(s) encontradas.
   </div>
   
+  <%= paginate @strips %>
+  
   <%= render_join(@strips.map.with_index, tag(:hr).html_safe) do |strip, idx| %>
     <div id="ctitle">
       [<%= idx + 1 %>] <%= strip.title %>
     </div>
 
     <div id="comic">
-      <%= image_tag strip.image.url, :width => "800", :height => "228" %>
+      <%= link_to strip_path(strip) do %>
+        <%= image_tag strip.image.url, :width => "800", :height => "228" %>
+      <% end %>
     </div>
     
     <div id="transcript">
       <%= content_tag(:pre, strip.text, class: "text") %>
     </div>
   <% end %>
+  
+  <%= paginate @strips %>
 <% end %>

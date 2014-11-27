@@ -1,6 +1,7 @@
 class AddTextToStrips < ActiveRecord::Migration
   def change
     add_column :strips, :text, :text
+    enable_extension "unaccent"
   end
   
   def data

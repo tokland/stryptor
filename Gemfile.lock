@@ -132,6 +132,9 @@ GEM
     kaminari (0.16.1)
       actionpack (>= 3.0.0)
       activesupport (>= 3.0.0)
+    kaminari-i18n (0.2.0)
+      kaminari
+      rails
     launchy (2.4.3)
       addressable (~> 2.3)
     listen (2.7.11)
@@ -318,6 +321,7 @@ DEPENDENCIES
   jquery-rails
   jquery-ui-rails
   kaminari
+  kaminari-i18n
   launchy
   maybe
   memoist

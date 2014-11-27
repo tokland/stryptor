@@ -1,4 +1,6 @@
 class StripsController < ApplicationController
+  PaginationOptions = {:default => 20, :min => 1, :max => 50}
+  
   def index
     strip = Strip.first_by_params!(params)
     redirect_to(strip_path(strip))
@@ -16,6 +18,9 @@ class StripsController < ApplicationController
   
   def search
     @strip_collection = StripCollection.find_by_param!(params[:strip_collection_id])
-    @strips = @strip_collection.strips.by_code(:asc).search(params[:text])
+    all_strips = @strip_collection.strips.by_code(:asc)
+    po = PaginationOptions
+    per_page = [[(params[:per_page] || 20).to_i, po[:max]].min, po[:min]].max
+    @strips = all_strips.search(params[:text]).page(params[:page]).per(per_page)
   end
 end
