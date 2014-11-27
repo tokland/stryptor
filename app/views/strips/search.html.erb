@@ -2,15 +2,17 @@
       :strip_collection => @strip_collection, 
       :title => @strip_collection.name,
     } do %>
+  <% start = @strips.current_page %>
   <div id="search-results">
-    <%= @strips.size %> tira(s) encontradas.
+    <%= @strips.total_count %> resultados
+    (mostrando: <%= start %>-<%= (start + @strips.size - 1) %>) 
   </div>
   
   <%= paginate @strips %>
   
   <%= render_join(@strips.map.with_index, tag(:hr).html_safe) do |strip, idx| %>
     <div id="ctitle">
-      [<%= idx + 1 %>] <%= strip.title %>
+      [<%= start + idx %>] <%= strip.title %>
     </div>
 
     <div id="comic">
