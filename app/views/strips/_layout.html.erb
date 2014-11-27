@@ -1,0 +1,35 @@
+<%= content_for :head_title, title %>
+<%= content_for :favicon, strip_collection.icon_url %>
+
+<div id="middle-container" class="box">
+  <div id="user-info">
+    <% if user_signed_in? %>
+      <%= current_user.name %> [<%= link_to "Salir", signout_path %>]
+    <% else %>
+      <%= link_to "Entrar ".html_safe + image_tag("facebook.png", :size => "32"), signin_path %>
+    <% end %>
+  </div>
+  
+  <div id="search">
+    <%= form_tag(search_strip_collection_strips_path, 
+          {:method => :get, :enforce_utf8 => false}) do %>
+      <%= text_field_tag :text, params[:text] %>
+      <%= submit_tag 'Buscar', {:name => nil} %>
+    <% end %>
+  </div>
+  
+  <%= yield %>
+  
+  <hr />
+  
+  <div id="footer">
+    <span class="info">
+      Tiras transcritas:
+      <%= strip_collection.strips.as do |strips| %>
+        <%= strips.with_transcriptions.count %>/<%= strips.count %> 
+      <% end %>
+    </span>
+  
+    <%= strip_collection.footer.maybe.html_safe.value %>
+  </div>
+</div>

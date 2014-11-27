@@ -7,7 +7,6 @@ class StripsController < ApplicationController
   def show
     @strip = Strip.find_by_params!(params)
     @pagination = @strip.pagination
-    render(:show)
   end
   
   def random
@@ -16,6 +15,7 @@ class StripsController < ApplicationController
   end
   
   def search
-    @strips = Strip.search(params[:text])
+    @strip_collection = StripCollection.find_by_param!(params[:strip_collection_id])
+    @strips = @strip_collection.strips.by_code(:asc).search(params[:text])
   end
 end

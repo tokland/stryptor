@@ -11,7 +11,11 @@ class Transcript < ActiveRecord::Base
   scope :by_version, proc { |key| order(Transcript[:created_at].send(key)) }
 
   def update_strip_text
-    strip.update_attributes(:text => text)
+    if strip.current_transcript == self
+      strip.update_attributes(:text => text)
+    else
+      true
+    end
   end
   
   def self.find_by_params!(params)

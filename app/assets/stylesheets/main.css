@@ -159,3 +159,9 @@ div.ui-tooltip {
 #footer .info {
   font-size: 0.7em;
 }
+
+#search {
+  text-align: left;
+  margin-left: 50px;
+  margin-top: 20px;
+}

@@ -1,8 +1,9 @@
 module StryptorSeed
-  def self.import_images(images)
+  def self.create_strips(images)
     collection = StripCollection.create!({
       :name => "Mafalda", 
       :code => "mafalda",
+      :icon_url => "http://download.zaudera.com/public/mafalda.gif",
       :image_url => "http://mafalda.zaudera.com/images/mafalda-%{code}.jpg",
       :footer => %q{
         <br />&#169; Quino |
@@ -23,4 +24,4 @@ module StryptorSeed
   end
 end
 
-StryptorSeed.import_images(Dir.glob("images/*.jpg"))
+StryptorSeed.create_strips(Dir.glob("images/*.jpg"))
