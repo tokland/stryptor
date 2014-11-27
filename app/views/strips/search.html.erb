@@ -3,12 +3,12 @@
       :title => @strip_collection.name,
     } do %>
     
-  <%= link_to(@strip_collection.name, [@strip_collection]) %>
-  
   <% start = (@strips.current_page - 1) * @per_page  + 1 %>
   <div id="search-results">
-    <%= @strips.total_count %> resultados
-    (mostrando: <%= start %>-<%= (start + @strips.size - 1) %>) 
+    <%= link_to(@strip_collection.name, [@strip_collection]) %>
+    -
+    <%= @strips.total_count %> tira(s)
+    (mostrando: <%= start %> a <%= (start + @strips.size - 1) %>) 
   </div>
   
   <%= paginate @strips %>
@@ -25,7 +25,7 @@
     </div>
     
     <div id="transcript">
-      <%= content_tag(:pre, highlight(strip.text, params[:text]), class: "text") %>
+      <%= content_tag(:pre, highlight(strip.text, params[:text].split), class: "text") %>
     </div>
   <% end %>
   

@@ -13,7 +13,7 @@
   <div id="search">
     <%= form_tag(search_strip_collection_strips_path, 
           {:method => :get, :enforce_utf8 => false}) do %>
-      <%= text_field_tag :text, params[:text] %>
+      <%= text_field_tag :text, params[:text], accesskey: "s" %>
       <%= submit_tag 'Buscar', {:name => nil} %>
     <% end %>
   </div>
