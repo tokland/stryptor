@@ -3,6 +3,7 @@ class Transcript < ActiveRecord::Base
   belongs_to :user
   
   after_save :update_strip_text
+  after_destroy :update_strip_text
   
   validates :strip, presence: true
   validates :text, presence: true
@@ -11,11 +12,8 @@ class Transcript < ActiveRecord::Base
   scope :by_version, proc { |key| order(Transcript[:created_at].send(key)) }
 
   def update_strip_text
-    if strip.current_transcript == self
-      strip.update_attributes(:text => text)
-    else
-      true
-    end
+    new_text = strip.current_transcript.maybe.text.value
+    strip.update_attributes(:text => new_text)
   end
   
   def self.find_by_params!(params)

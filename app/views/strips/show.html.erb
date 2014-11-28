@@ -1,6 +1,6 @@
 <%= render_layout "layout", {
-      :strip_collection => @strip.strip_collection, 
       :title => @strip.title,
+      :strip_collection => @strip.strip_collection, 
     } do %>
   <div id="ctitle">
     <%= @strip.title %>
@@ -34,7 +34,7 @@
     <% if user_signed_in? %>
       <%= form_for @strip.transcripts.new(:text => @strip.text), 
             :url => polymorphic_path([@strip.strip_collection, @strip, :transcripts]),
-            :html => {:class => "toggle-edit", :style => "display: none"} do |form|%>
+            :html => {:class => "toggle-edit", :style => "display: none"} do |form| %>
         <%= form.text_area :text %>
         <%= form.submit "Guardar" %>
         
@@ -43,27 +43,23 @@
       <% end %>
     <% end %>
 
-    <% if @strip.transcripts.count > 0 %>
-      <div id="history">
-        <div id="transcript-history" style="display: none">
-          <ul>
-            <% @strip.transcripts.joins(:user).by_version(:asc).
-                 map.with_index.reverse_each do |transcript, idx| %>
-              <li>
-                <%= idx + 1 %>.
-                <%= transcript.user.name %> -
-                <%= transcript.created_at.utc.strftime("%d/%m/%Y %H:%M UTC") %>
-                -
-                <%= link_to "texto", "javascript:void()", 
-                      :"data-toggle" => "#transcript-#{transcript.id}" %>
-                <%= content_tag(:pre, transcript.text, 
-                      :id => "transcript-#{transcript.id}", 
-                      :style => "display:none") %>   
-              </li>
-            <% end %>
-          </ul>
-        </div>
-      </div>
-    <% end %>
+    <div id="transcript-history" style="display: none">
+      <ul>
+        <% @strip.transcripts.joins(:user).by_version(:asc).
+             map.with_index.reverse_each do |transcript, idx| %>
+          <li>
+            <%= idx + 1 %>.
+            <%= transcript.user.name %> -
+            <%= transcript.created_at.utc.strftime("%d/%m/%Y %H:%M UTC") %>
+            -
+            <%= link_to "texto", "javascript:void()", 
+                  :"data-toggle" => "#transcript-#{transcript.id}" %>
+            <%= content_tag(:pre, transcript.text, 
+                  :id => "transcript-#{transcript.id}", 
+                  :style => "display:none") %>   
+          </li>
+        <% end %>
+      </ul>
+    </div>
   </div>
 <% end %>

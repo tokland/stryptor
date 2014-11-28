@@ -64,5 +64,7 @@ main = ->
   submit_forms_on_control_enter()
   turbolink_load_cursor()
   tooltip()
+  suggests = ["Mafalda", "Felipe", "Susanita", "Manolito", "Miguelito", "Guille"]
+  $("#transcript_text").asuggest(suggests)  
 
 $(main)
