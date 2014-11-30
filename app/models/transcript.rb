@@ -2,8 +2,7 @@ class Transcript < ActiveRecord::Base
   belongs_to :strip, counter_cache: true
   belongs_to :user
   
-  after_save :update_strip_text
-  after_destroy :update_strip_text
+  after_commit :update_strip_text
   
   validates :strip, presence: true
   validates :text, presence: true

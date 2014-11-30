@@ -16,12 +16,10 @@ FactoryGirl.define do
   factory :strip do
     sequence(:position)
     sequence(:code, &:to_s)
-    strip_collection
   end
   
   factory :transcript do
     text "Text"
     user
-    strip
   end  
 end

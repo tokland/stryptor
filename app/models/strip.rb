@@ -13,14 +13,14 @@ class Strip < ActiveRecord::Base
   validates_attachment :image, content_type: {content_type: ["image/jpeg"]}
   
   scope :by_code, proc { |key| order(Strip[:code].send(key)) }
-  scope :with_transcriptions, proc { where(Strip[:transcripts_count] ^ 0) }
-  scope :without_transcriptions, proc { where(Strip[:transcripts_count] == 0) }
+  scope :without_transcriptions, proc { where(Strip[:text] == nil) }
+  scope :with_transcriptions, proc { where(Strip[:text] != nil) }
 
   pg_search_scope :search, :against => :text, :ignoring => :accents
   
   def self.random
-    Strip.without_transcriptions.sample ||
-      Strip.by_code(:asc).offset(rand(Strip.count)).first!
+    strips = Strip.without_transcriptions.presence || Strip.all 
+    strips.by_code(:asc).offset(rand(strips.count)).first!
   end
   
   def self.find_by_param!(value)
@@ -54,14 +54,14 @@ class Strip < ActiveRecord::Base
   end
   
   def pagination
-    strips = strip_collection.strips
+    strips = strip_collection.strips.by_code(:asc)
     Pagination.from_hash(
       index: position,
       total: strips.count,
-      first: strips.by_code(:asc).first,
-      last: strips.by_code(:desc).first,
-      previous: strips.by_code(:desc).where(Strip[:code] < code).first,
-      next: strips.by_code(:asc).where(Strip[:code] > code).first,
+      first: strips.first,
+      last: strips.last,
+      next: strips.where(Strip[:code] > code).first,
+      previous: strips.where(Strip[:code] < code).last,
     )
   end
 end

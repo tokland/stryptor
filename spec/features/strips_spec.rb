@@ -1,24 +1,28 @@
 require 'rails_helper'
 
-describe 'Strip pages', :type => :feature, :js => true do
+describe 'Strip', :type => :feature, :js => true do
   before do
     @user = FactoryGirl.create(:user, :name => "John Smith", :email => "john@smith.com")
     
-    collection = FactoryGirl.create(:strip_collection, {
+    FactoryGirl.create(:strip_collection, {
       :code => "mafalda",
       :name => "Mafalda",
       :footer => "My footer",
-      :image_url => "http://server/%{code}.jpg"
+      :image_url => "http://server/%{code}.jpg",
+      :strips => [
+        FactoryGirl.build(:strip, :code => "001", :position => 0),
+        FactoryGirl.build(:strip, :code => "002", :position => 1),
+        FactoryGirl.build(:strip, :code => "003", :position => 2, :transcripts => [
+          FactoryGirl.build(:transcript, {:user => @user, :text => "t003"}),
+        ]),
+      ],
     })
-    @strips = [
-      FactoryGirl.create(:strip, :strip_collection => collection, :code => "001", :position => 0),
-      FactoryGirl.create(:strip, :strip_collection => collection, :code => "002", :position => 1),
-      FactoryGirl.create(:strip, :strip_collection => collection, :code => "003", :position => 2),
-    ] 
-    FactoryGirl.create(:transcript, :user => @user, :strip => @strips[2], :text => "003 text")
-    
-    collection2 = FactoryGirl.create(:strip_collection, :name => "Snoopy")
-    FactoryGirl.create(:strip, :strip_collection => collection2, :code => "001", :position => 0)
+    FactoryGirl.create(:strip_collection, {
+      :name => "Snoopy",
+      :strips => [
+        FactoryGirl.build(:strip, :code => "001", :position => 0),
+      ],
+    })
   end
   
   describe 'Homepage' do
@@ -59,7 +63,7 @@ describe 'Strip pages', :type => :feature, :js => true do
     end
     
     it 'shows the text' do
-      expect(page).to have_selector('.transcript pre', text: "003 text")
+      expect(page).to have_selector('.transcript pre', text: "t003")
     end
   end
   
@@ -221,7 +225,7 @@ describe 'Strip pages', :type => :feature, :js => true do
   
   describe "Search" do
     before do
-      @strips.each do |strip|
+      StripCollection.find_by!(code: "mafalda").strips.each do |strip|
         FactoryGirl.create(:transcript,
           user: @user, 
           strip: strip, 

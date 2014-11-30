@@ -69,7 +69,7 @@ autocomplete = ->
 	  caseSensitive: true
 	  minLength: 1
 	  wrapInput: true
-  })    
+  })
   
 main = ->
   init_toggle()
