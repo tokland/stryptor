@@ -17,10 +17,10 @@ class StripsController < ApplicationController
   end
   
   def search
-    @strip_collection = StripCollection.find_by_param!(params[:strip_collection_id])
-    all_strips = @strip_collection.strips.by_code(:asc)
     po = PaginationOptions
-    @per_page = [[(params[:per_page] || 20).to_i, po[:max]].min, po[:min]].max
-    @strips = all_strips.search(params[:text]).page(params[:page]).per(@per_page)
+    @strip_collection = StripCollection.find_by_param!(params[:strip_collection_id])
+    @per_page = [[(params[:per_page] || po[:default]).to_i, po[:max]].min, po[:min]].max
+    @strips = @strip_collection.strips.by_code(:asc).search(params[:text]).
+      page(params[:page]).per(@per_page)
   end
 end

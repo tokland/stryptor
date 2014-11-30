@@ -16,17 +16,17 @@
   <%= paginate @strips %>
   
   <%= render_join @strips.map.with_index, tag(:hr) do |strip, idx| %>
-    <div id="ctitle">
+    <div class="ctitle">
       [<%= start + idx %>] <%= strip.title %>
     </div>
 
-    <div id="comic">
+    <div class="comic">
       <%= link_to strip_path(strip) do %>
         <%= image_tag strip.image.url, :width => "800", :height => "228" %>
       <% end %>
     </div>
     
-    <div id="transcript">
+    <div class="transcript">
       <%= content_tag(:pre, highlight(strip.text, params[:text].split), class: "text") %>
     </div>
   <% end %>

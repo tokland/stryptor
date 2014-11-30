@@ -57,6 +57,18 @@ turbolink_load_cursor = ->
 
 tooltip = ->
   $(document).tooltip()
+
+autocomplete = ->
+  suggestions = ["Mafalda", "Felipe", "Susanita", "Manolito", "Miguelito", 
+    "Guille", "Mamá", "Papá", "Libertad", "Maestra"]
+  $("#transcript_text").tabcomplete(suggestions, {
+	  after: ""
+	  arrowKeys: false
+	  hint: "placeholder"
+	  caseSensitive: true
+	  minLength: 1
+	  wrapInput: true
+  })    
   
 main = ->
   init_toggle()
@@ -64,7 +76,6 @@ main = ->
   submit_forms_on_control_enter()
   turbolink_load_cursor()
   tooltip()
-  suggests = ["Mafalda", "Felipe", "Susanita", "Manolito", "Miguelito", "Guille"]
-  $("#transcript_text").asuggest(suggests)  
+  autocomplete()
 
 $(main)

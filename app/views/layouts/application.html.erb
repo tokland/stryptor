@@ -4,8 +4,7 @@
     <%= title("Stryptor - Comic strips transcriptor", :head_title, join_string: " - ") %>
     <%= favicon_link_tag content_for(:favicon) || 'snoopy.gif' %>
     <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track' => true %>
-    <%= javascript_include_tag 'application', 'jquery.a-tools-1.4.1', 'jquery.assugest',
-          'data-turbolinks-track' => true %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
     <%= csrf_meta_tags %>
   </head>
   

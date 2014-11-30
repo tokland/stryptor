@@ -2,9 +2,8 @@
       :title => @strip.title,
       :strip_collection => @strip.strip_collection, 
     } do %>
-  <div id="ctitle">
-    <%= @strip.title %>
-    (<%= @pagination.index + 1 %> de <%= @pagination.total %>)
+  <div class="ctitle">
+    <%= @strip.title %> (<%= @pagination.index + 1 %> de <%= @pagination.total %>)
   </div>
   
   <ul class="comic-nav">
@@ -15,11 +14,11 @@
     <li><%= link_to ">|", strip_path(@pagination.last), :accesskey => "l" %></li>
   </ul>
   
-  <div id="comic">
+  <div class="comic">
     <%= image_tag @strip.image.url, :width => "800", :height => "228" %>
   </div>
   
-  <div id="transcript" class="<%= current_user ? 'editable' : '' %>">
+  <div class="transcript" class="<%= current_user ? 'editable' : '' %>">
     <div class="toggle-edit">
       <%= content_tag(:pre, @strip.text, class: "text") %>
      
