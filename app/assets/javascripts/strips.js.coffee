@@ -35,7 +35,8 @@ init_toggle = ->
   $(document).on "click", "[data-toggle]", stop_event (ev) ->
     selector = $(ev.target).attr("data-toggle")
     $(selector).toggle()
-    $(selector).closest("form").find("input:visible,textarea:visible").first().focus()
+    $(selector).closest("form").
+      find("input[name]:visible,textarea[name]:visible").first().focus()
     
 init_close = ->
   $(document).on "click", "[data-close]", stop_event (ev) ->
