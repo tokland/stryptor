@@ -1,5 +1,5 @@
 class StripCollection < ActiveRecord::Base
-  has_many :strips, dependent: :destroy
+  has_many :strips, {dependent: :destroy}, proc { order(Strip[:position].asc) }
   
   validates :code, presence: true, uniqueness: true
   validates :image_url, presence: true

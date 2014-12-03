@@ -7,7 +7,7 @@ class ApplicationController < ActionController::Base
   
   def index
     collection = StripCollection.first!
-    redirect_to(strip_path(collection.strips.by_code(:asc).first!))
+    redirect_to(strip_path(collection.strips.first!))
   end
   
   private

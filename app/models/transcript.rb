@@ -24,9 +24,8 @@ class Transcript < ActiveRecord::Base
     collection = StripCollection.find_by_param!(params[:strip_collection_id])
     strip = collection.strips.find_by_param!(params[:strip_id])
     new_text = params[:transcript].maybe[:text].strip.value
-    previous_transcript = strip.transcripts.by_version(:desc).first
-    if previous_transcript && new_text == previous_transcript.text
-      previous_transcript
+    if strip.text && strip.text == new_text
+      strip.current_transcript
     else
       strip.transcripts.new(text: new_text, user: user)
     end

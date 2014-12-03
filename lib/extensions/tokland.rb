@@ -81,3 +81,9 @@ class Object
     !enumerable.include?(self)
   end
 end
+
+class Fixnum
+  def clip(minimum, maximum)
+    [[self, maximum].min, minimum].max
+  end
+end

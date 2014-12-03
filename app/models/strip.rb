@@ -12,7 +12,7 @@ class Strip < ActiveRecord::Base
   validates :code, presence: true, uniqueness: {scope: :strip_collection_id}
   validates_attachment :image, content_type: {content_type: ["image/jpeg"]}
   
-  scope :by_code, proc { |key| order(Strip[:code].send(key)) }
+  scope :by_position, proc { order(Strip[:position].asc) }
   scope :without_transcriptions, proc { where(Strip[:text] == nil) }
   scope :with_transcriptions, proc { where(Strip[:text] != nil) }
 
@@ -20,7 +20,7 @@ class Strip < ActiveRecord::Base
   
   def self.random
     strips = Strip.without_transcriptions.presence || Strip.all 
-    strips.by_code(:asc).offset(rand(strips.count)).first!
+    strips.offset(rand(strips.count)).first!
   end
   
   def self.find_by_param!(value)
@@ -29,7 +29,7 @@ class Strip < ActiveRecord::Base
   
   def self.first_by_params!(params)
     collection = StripCollection.find_by_param!(params[:strip_collection_id])
-    collection.strips.by_code(:asc).first!
+    collection.strips.first!
   end
 
   def self.find_by_params!(params)
@@ -54,14 +54,14 @@ class Strip < ActiveRecord::Base
   end
   
   def pagination
-    strips = strip_collection.strips.by_code(:asc)
+    strips = strip_collection.strips
     Pagination.from_hash(
       index: position,
       total: strips.count,
       first: strips.first,
       last: strips.last,
-      next: strips.where(Strip[:code] > code).first,
-      previous: strips.where(Strip[:code] < code).last,
+      next: strips.where(Strip[:position] > position).first,
+      previous: strips.where(Strip[:position] < position).last,
     )
   end
 end
