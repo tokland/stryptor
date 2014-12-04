@@ -11,10 +11,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141126201555) do
+ActiveRecord::Schema.define(version: 20141204200545) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+  enable_extension "unaccent"
 
   create_table "strip_collections", force: true do |t|
     t.string   "code"
@@ -48,6 +49,8 @@ ActiveRecord::Schema.define(version: 20141126201555) do
     t.text     "text"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "anonuser_ip"
+    t.string   "anonuser_name"
   end
 
   add_index "transcripts", ["strip_id"], name: "index_transcripts_on_strip_id", using: :btree

@@ -22,33 +22,33 @@
     <div class="toggle-edit">
       <%= content_tag(:pre, @strip.text, class: "text") %>
      
-      <% if user_signed_in? %>
-        <%= link_to "Editar", "#", :accesskey => "e", :"data-toggle" => ".toggle-edit" %>
-      <% else %>
-        <%= link_to "Entrar para editar", signin_path %>
-      <% end %>
+      <%= link_to "Editar", "#", :accesskey => "e", :"data-toggle" => ".toggle-edit" %>
       <%= link_to_history(@strip) %>
     </div>
 
-    <% if user_signed_in? %>
-      <%= form_for @strip.transcripts.new(:text => @strip.text), 
-            :url => polymorphic_path([@strip.strip_collection, @strip, :transcripts]),
-            :html => {:class => "toggle-edit", :style => "display: none"} do |form| %>
-        <%= form.text_area :text %>
-        <%= form.submit "Guardar" %>
-        
-        <%= link_to "Cancelar", "#", :accesskey => "c", :"data-toggle" => ".toggle-edit" %>
-        <%= link_to_history(@strip) %>
+    <%= form_for @strip.form_transcript(session), 
+          :url => polymorphic_path([@strip.strip_collection, @strip, :transcripts]),
+          :html => {:class => "toggle-edit", :style => "display: none"} do |form| %>
+      <%= hidden_field_tag :token, "", :id => "transcript-token" %>
+      <%= form.text_area :text %>
+      
+      <% unless user_signed_in? %>
+        <%= form.label :anonuser_name, "Tu nombre" %>:
+        <%= form.text_field :anonuser_name %>
       <% end %>
+      <%= form.submit "Guardar" %>
+      
+      <%= link_to "Cancelar", "#", :accesskey => "c", :"data-toggle" => ".toggle-edit" %>
+      <%= link_to_history(@strip) %>
     <% end %>
 
     <div id="transcript-history" style="display: none">
       <ul>
-        <% @strip.transcripts.joins(:user).by_version(:asc).
+        <% @strip.transcripts.includes(:user).by_version(:asc).
              map.with_index.reverse_each do |transcript, idx| %>
           <li>
             <%= idx + 1 %>.
-            <%= transcript.user.name %> -
+            <%= transcript.user_name %> -
             <%= transcript.created_at.utc.strftime("%d/%m/%Y %H:%M UTC") %>
             -
             <%= link_to "texto", "javascript:void()", 

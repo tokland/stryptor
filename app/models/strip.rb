@@ -53,6 +53,11 @@ class Strip < ActiveRecord::Base
     "%s %s" % [strip_collection.name, code]
   end
   
+  def form_transcript(session)
+    anonuser_name = session[:anonuser_name] || "Anónimo"
+    transcripts.new(:text => text, :anonuser_name => anonuser_name)
+  end
+  
   def pagination
     strips = strip_collection.strips
     Pagination.from_hash(

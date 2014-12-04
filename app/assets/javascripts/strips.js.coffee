@@ -71,6 +71,10 @@ autocomplete = ->
 	  wrapInput: true
   })
   
+set_token = ->
+  $("#new_transcript").submit ->
+    $("#transcript-token").val("1234")
+  
 main = ->
   init_toggle()
   init_close()
@@ -78,5 +82,6 @@ main = ->
   turbolink_load_cursor()
   tooltip()
   autocomplete()
+  set_token()
 
 $(main)

@@ -1,5 +1,5 @@
 class TranscriptsController < ApplicationController
-  before_filter :authenticate_user!, :only => :create
+  before_filter :check_antispam_token, :only => :create
   
   def show
     strip = Strip.find_by_params!(params)
@@ -10,13 +10,22 @@ class TranscriptsController < ApplicationController
   end
   
   def create
-    @transcript = Transcript.from_params(current_user, params)
+    @transcript = Transcript.from_request(request, current_user)
     
     if @transcript.save
+      session[:anonuser_name] = @transcript.anonuser_name
       redirect_to(strip_path(@transcript.strip))
     else
       error_message = @transcript.errors.full_messages.to_sentence
       redirect_to(strip_path(@transcript.strip), :alert => error_message)
+    end
+  end
+
+private
+
+  def check_antispam_token
+    unless params[:token] == "1234"
+      render :status => :forbidden, :text => "Forbidden"
     end
   end
 end
