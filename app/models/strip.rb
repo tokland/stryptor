@@ -14,7 +14,7 @@ class Strip < ActiveRecord::Base
   
   scope :by_position, proc { order(Strip[:position].asc) }
   scope :without_transcriptions, proc { where(Strip[:text] == nil) }
-  scope :with_transcriptions, proc { where(Strip[:text] != nil) }
+  scope :with_transcriptions, proc { where(Strip[:text] ^ nil) }
 
   pg_search_scope :search, :against => :text, :ignoring => :accents
   
