@@ -4,6 +4,7 @@ class ApplicationController < ActionController::Base
   before_filter :load_current_user
   attr_reader :current_user
   helper_method :current_user, :user_signed_in?, :strip_path
+  before_filter :store_location
   
   def index
     collection = StripCollection.first!
@@ -12,6 +13,16 @@ class ApplicationController < ActionController::Base
   
   private
 
+  def store_location
+    unless controller_name == "sessions"
+      session[:redirect_url] = request.fullpath
+    end
+  end
+  
+  def stored_url
+    session[:redirect_url] || root_path
+  end
+   
   def load_current_user
     @current_user = session[:user_id] ? User.find_by_id(session[:user_id]) : nil
   end
