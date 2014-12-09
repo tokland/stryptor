@@ -2,7 +2,7 @@ class TranscriptsController < ApplicationController
   before_filter :check_antispam_token, :only => :create
   
   def index
-    @transcripts = Transcript.by_version(:desc).page(params[:page]).per(5)
+    @transcripts = Transcript.by_version(:desc).page(params[:page]).per(1000)
   end
   
   def show
