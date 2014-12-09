@@ -5,7 +5,7 @@ class Strip < ActiveRecord::Base
   belongs_to :strip_collection
   has_many :transcripts, inverse_of: :strip, dependent: :destroy 
   has_attached_file :image, 
-    :default_url => proc { |image| image.instance.image_url }
+    default_url: proc { |image| image.instance.image_url }
     
   validates :strip_collection, presence: true
   validates :position, presence: true, uniqueness: {scope: :strip_collection_id} 
@@ -16,7 +16,7 @@ class Strip < ActiveRecord::Base
   scope :without_transcriptions, proc { where(Strip[:text] == nil) }
   scope :with_transcriptions, proc { where(Strip[:text] ^ nil) }
 
-  pg_search_scope :search, :against => :text, :ignoring => :accents
+  pg_search_scope :search, against: :text, ignoring: :accents
   
   def self.random
     strips = Strip.without_transcriptions.presence || Strip.all 
@@ -55,7 +55,7 @@ class Strip < ActiveRecord::Base
   
   def form_transcript(session)
     anonuser_name = session[:anonuser_name] || "Anónimo"
-    transcripts.new(:text => text, :anonuser_name => anonuser_name)
+    transcripts.new(text: text, anonuser_name: anonuser_name)
   end
   
   def pagination

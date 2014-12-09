@@ -176,3 +176,8 @@ textarea.hint {
   -moz-box-shadow: none;
   box-shadow: none;
 }
+
+#transcripts {
+  text-align: left;
+  list-style-type: none;
+}

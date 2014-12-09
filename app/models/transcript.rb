@@ -6,7 +6,6 @@ class Transcript < ActiveRecord::Base
   
   validates :strip, presence: true
   validates :text, presence: true
-  #validates :user, presence: true
   
   scope :by_version, proc { |key| order(Transcript[:created_at].send(key)) }
 

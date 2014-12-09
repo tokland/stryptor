@@ -1,19 +1,5 @@
 require 'rails_helper'
 
-shared_examples :strip do |info|
-  it 'shows the strip image' do
-    expect(page).to have_selector("img[src='http://server/%s.jpg']" % info[:code])
-  end
-  
-  it 'shows title <collection-name> <script-code> (<position> of <total>)' do
-    expect(page).to have_selector('.ctitle', :text => "Mafalda %s" % info[:code])
-  end
-  
-  it 'shows collection footer' do
-    expect(page).to have_selector('#footer', :text => info[:footer])
-  end
-end
-
 describe 'Strip', :type => :feature, :js => true do
   let(:user) do 
     FactoryGirl.create(:user, :name => "John Smith", :email => "john@abc.com")
@@ -43,6 +29,21 @@ describe 'Strip', :type => :feature, :js => true do
     })
   end
   
+  shared_examples :strip do |code:, position:, total:, footer:|
+    it 'shows the strip image' do
+      expect(page).to have_selector("img[src='http://server/%s.jpg']" % code)
+    end
+    
+    it 'shows title <collection-name> <script-code> (<position> of <total>)' do
+      text = "Mafalda %s (%d de %d)" % [code, position, total]
+      expect(page).to have_selector('.ctitle', :text => text)
+    end
+    
+    it 'shows collection footer' do
+      expect(page).to have_selector('#footer', :text => footer)
+    end
+  end
+
   describe 'Root URL' do
     before { page.visit '/' }
     
@@ -73,7 +74,7 @@ describe 'Strip', :type => :feature, :js => true do
     describe 'with transcripts' do
       before { page.visit '/mafalda/003' }
       
-      it_behaves_like :strip, code: "003", footer: "My footer"
+      it_behaves_like :strip, code: "003", footer: "My footer", position: 3, total: 3
 
       it 'shows the history link' do
         expect(page).to have_link("Historial")
@@ -87,20 +88,20 @@ describe 'Strip', :type => :feature, :js => true do
     describe 'for unlogged user' do
       before { page.visit '/mafalda/001' }
       
-      it_behaves_like :strip, code: "001", footer: "My footer"
+      it_behaves_like :strip, code: "001", footer: "My footer", position: 1, total: 3
       
       it 'shows link to FB auth' do
         expect(page).to have_selector('#user-info', :text => "Entrar")
       end
     end
 
-    describe 'Detail without transcripts with logged user' do
+    describe 'without transcripts, with logged user' do
       before do
         page.set_rack_session(:user_id => user.id)
         page.visit '/mafalda/001'
       end
       
-      it_behaves_like :strip, code: "001", footer: "My footer"
+      it_behaves_like :strip, code: "001", footer: "My footer", position: 1, total: 3
 
       it 'shows user name' do
         expect(page).to have_selector('#user-info', :text => "John Smith")
@@ -169,16 +170,16 @@ describe 'Strip', :type => :feature, :js => true do
           
           describe 'Submit new transcription' do
             before do
-              page.fill_in("transcript[text]", :with => "Strip text")
+              page.fill_in("transcript[text]", :with => "New text")
               page.click_button("Guardar")
             end
         
-            it "Shows the [edit] button again" do          
+            it "shows the [edit] button again" do          
               expect(page).to have_selector('.toggle-edit', text: "Editar", visible: true)
             end
             
             it 'shows new transcription' do
-              expect(page).to have_selector('.transcript pre', text: "Strip text")
+              expect(page).to have_selector('.transcript pre', text: "New text")
             end
 
             it 'shows the history link' do
@@ -237,6 +238,7 @@ describe 'Strip', :type => :feature, :js => true do
     
     describe "non-existing text" do
       before { page.visit("/mafalda/search?text=wrong") }
+      
       it { expects(page).to have_selector("#text[value='wrong']") }
       it { expects(page).to have_selector("#search-results", :text => '0 tira(s)') }
       it { expects(page).to have_selector(".comic img", :count => 0) }
@@ -244,6 +246,7 @@ describe 'Strip', :type => :feature, :js => true do
   
     describe "text contained in three matches" do
       before { page.visit("/mafalda/search?text=hello") }
+      
       it { expects(page).to have_selector("#text[value='hello']") }
       it { expects(page).to have_selector("#search-results", :text => '3 tira(s)') }
       it { expects(page).to have_selector("#search-results", :text => 'mostrando: 1 a 3') }
@@ -252,6 +255,7 @@ describe 'Strip', :type => :feature, :js => true do
     
     describe "text contained in one match" do
       before { page.visit("/mafalda/search?text=hello+002") }
+      
       it { expects(page).to have_selector("#text[value='hello 002']") }
       it { expects(page).to have_selector("#search-results", :text => '1 tira(s)') }
       it { expects(page).to have_selector("#search-results", :text => 'mostrando: 1 a 1') }
@@ -261,6 +265,7 @@ describe 'Strip', :type => :feature, :js => true do
     describe "Paginator" do
       describe "Without page" do
         before { page.visit("/mafalda/search?text=hello&per_page=2") }
+        
         it { expects(page).to have_selector("#text[value='hello']") }
         it { expects(page).to have_selector("#search-results", :text => '3 tira(s)') }
         it { expects(page).to have_selector("#search-results", :text => 'mostrando: 1 a 2') }
@@ -270,6 +275,7 @@ describe 'Strip', :type => :feature, :js => true do
 
       describe "First page" do
         before { page.visit("/mafalda/search?text=hello&per_page=2&page=1") }
+        
         it { expects(page).to have_selector("#text[value='hello']") }
         it { expects(page).to have_selector("#search-results", :text => '3 tira(s)') }
         it { expects(page).to have_selector("#search-results", :text => 'mostrando: 1 a 2') }
@@ -279,6 +285,7 @@ describe 'Strip', :type => :feature, :js => true do
 
       describe "Second page" do
         before { page.visit("/mafalda/search?text=hello&per_page=2&page=2") }
+        
         it { expects(page).to have_selector("#text[value='hello']") }
         it { expects(page).to have_selector("#search-results", :text => '3 tira(s)') }
         it { expects(page).to have_selector("#search-results", :text => 'mostrando: 3 a 3') }
@@ -288,6 +295,7 @@ describe 'Strip', :type => :feature, :js => true do
 
       describe "Out-of-bounds page" do
         before { page.visit("/mafalda/search?text=hello&per_page=2&page=123") }
+        
         it { expects(page).to have_selector("#text[value='hello']") }
         it { expects(page).to have_selector("#search-results", :text => '3 tira(s)') }
         it { expects(page).not_to have_selector("#search-results", :text => 'mostrando') }
