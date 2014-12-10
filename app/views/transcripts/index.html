@@ -1,10 +1,14 @@
 <div id="middle-container">
   <div class="box">
-    <%= @transcripts.count %> transcripciones
+    <h2>
+      Transcritas: <%= Strip.with_transcriptions.count %> / <%= Strip.count %> 
+    </h2>
     <%= paginate @transcripts %>
     
     <% @transcripts.includes(:user).group_by { |t| t.created_at.to_date }.each do |date, transcripts| %>
-      <h3><%= date.strftime("%d/%m/%Y") %></h3>
+      <h3>
+        <%= date.strftime("%d/%m/%Y") %> (<%= transcripts.uniq(&:strip).size %>)
+      </h3>
       
       <ul class="transcripts">
         <% transcripts.group_by(&:strip).each do |strip, transcripts_for_strip| %>
