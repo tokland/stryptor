@@ -53,12 +53,15 @@
             -
             <%= link_to "texto", "javascript:void()", 
                   :"data-toggle" => "#transcript-#{transcript.id}" %>
-            <%= content_tag(:pre, transcript.text, 
+            <%= content_tag :pre, transcript.text, 
                   :id => "transcript-#{transcript.id}", 
-                  :style => "display:none") %>   
+                  :style => "display:none" %>   
           </li>
         <% end %>
       </ul>
     </div>
   </div>
+  
+  <% suggestions = @strip.strip_collection.characters.maybe.split("|").value %>
+  <%= javascript_tag("init_strip({suggestions: #{suggestions.to_json}});") %>
 <% end %>

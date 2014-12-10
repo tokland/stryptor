@@ -59,10 +59,8 @@ turbolink_load_cursor = ->
 tooltip = ->
   $(document).tooltip()
 
-autocomplete = ->
-  suggestions = ["Mafalda", "Felipe", "Susanita", "Manolito", "Miguelito", 
-    "Guille", "Mamá", "Papá", "Libertad", "Maestra"]
-  $("#transcript_text").tabcomplete(suggestions, {
+autocomplete = (suggestions) ->
+  $("#transcript_text").tabcomplete(suggestions || [], {
 	  after: ""
 	  arrowKeys: false
 	  hint: "placeholder"
@@ -75,13 +73,14 @@ set_token = ->
   $("#new_transcript").submit ->
     $("#transcript-token").val("1234")
   
-main = ->
+window.init_strip = (options) ->
+  $ ->
+    autocomplete(options.suggestions)
+    set_token()
+    
+$ ->
   init_toggle()
   init_close()
   submit_forms_on_control_enter()
   turbolink_load_cursor()
   tooltip()
-  autocomplete()
-  set_token()
-
-$(main)

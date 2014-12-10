@@ -29,7 +29,7 @@ class Transcript < ActiveRecord::Base
     strip = collection.strips.find_by_param!(params[:strip_id])
     new_text = params[:transcript].maybe[:text].strip.value
     
-    if strip.text && strip.text == new_text
+    if strip.text && strip.text == new_text && strip.current_transcript
       strip.current_transcript
     elsif user
       strip.transcripts.new(text: new_text, user: user)

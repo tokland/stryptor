@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141204200545) do
+ActiveRecord::Schema.define(version: 20141209190245) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -26,6 +26,7 @@ ActiveRecord::Schema.define(version: 20141204200545) do
     t.text     "footer"
     t.string   "image_url"
     t.string   "icon_url"
+    t.text     "characters"
   end
 
   create_table "strips", force: true do |t|
