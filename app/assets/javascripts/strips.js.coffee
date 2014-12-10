@@ -83,4 +83,3 @@ $ ->
   init_close()
   submit_forms_on_control_enter()
   turbolink_load_cursor()
-  tooltip()
