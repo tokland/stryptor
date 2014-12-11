@@ -18,7 +18,6 @@
             <%= render_join(transcripts_for_strip, " | ") do |transcript| %>
               <%= transcript.user_name %> -
               <%= transcript.created_at.utc.strftime("%H:%M") %>
-              -
               <%= link_to "texto", "javascript:void()", 
                     :"data-toggle" => "#transcript-#{transcript.id}" %>
               <%= content_tag :pre, transcript.text, 
