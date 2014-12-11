@@ -12,18 +12,20 @@
       
       <ul class="transcripts">
         <% transcripts.group_by(&:strip).each do |strip, transcripts_for_strip| %>
-          <% transcript = transcripts_for_strip.first %>
           <li>
-            <%= transcript.user_name %> -
-            <%= transcript.created_at.utc.strftime("%d/%m/%Y %H:%M UTC") %>
-            -
-            <%= link_to transcript.strip.title, strip_path(transcript.strip) %>
-            -
-            <%= link_to "texto", "javascript:void()", 
-                  :"data-toggle" => "#transcript-#{transcript.id}" %>
-            <%= content_tag :pre, transcript.text, 
-                  :id => "transcript-#{transcript.id}", 
-                  :style => "display:none" %>
+            <%= link_to strip.title, strip_path(strip) %>
+            |
+            <%= render_join(transcripts_for_strip, tag(:br)) do |transcript| %>
+              <%= transcript.user_name %> -
+              <%= transcript.created_at.utc.strftime("%d/%m/%Y %H:%M UTC") %>
+              -
+              -
+              <%= link_to "texto", "javascript:void()", 
+                    :"data-toggle" => "#transcript-#{transcript.id}" %>
+              <%= content_tag :pre, transcript.text, 
+                    :id => "transcript-#{transcript.id}", 
+                    :style => "display:none" %>
+            <% end %>
           </li>
         <% end %>
       </ul>

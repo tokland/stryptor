@@ -16,7 +16,7 @@
   
   <div class="comic">
     <%= image_tag @strip.image.url, :width => "800", :height => "228", 
-          :alt => @strip.title, :title => @strip.text %>
+          :alt => @strip.text, :title => @strip.text %>
   </div>
   
   <div class="transcript" class="<%= current_user ? 'editable' : '' %>">
