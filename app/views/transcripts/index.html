@@ -15,9 +15,9 @@
           <li>
             <%= link_to strip.title, strip_path(strip) %>
             |
-            <%= render_join(transcripts_for_strip, tag(:br)) do |transcript| %>
+            <%= render_join(transcripts_for_strip, " | ") do |transcript| %>
               <%= transcript.user_name %> -
-              <%= transcript.created_at.utc.strftime("%d/%m/%Y %H:%M UTC") %>
+              <%= transcript.created_at.utc.strftime("%H:%M") %>
               -
               -
               <%= link_to "texto", "javascript:void()", 
