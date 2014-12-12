@@ -8,6 +8,10 @@ class Transcript < ActiveRecord::Base
   validates :text, presence: true
   
   scope :by_version, proc { |key| order(Transcript[:created_at].send(key)) }
+  
+  def created_at
+    read_attribute(:created_at).maybe.in_time_zone("Madrid").value
+  end
 
   def user_name
     (user ? user.name : anonuser_name) || "Anónimo" 
