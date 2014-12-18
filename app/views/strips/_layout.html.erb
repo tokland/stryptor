@@ -24,12 +24,21 @@
   
   <div id="footer">
     <span class="info">
-      Tiras transcritas:
+      Transcripciones:
       <%= strip_collection.strips.as do |strips| %>
         <%= strips.with_transcriptions.count %>/<%= strips.count %> 
       <% end %>
+      <% Transcript.order("created_at desc").last.if_present_as do |transcript| %>
+        (Hoy: <%= Strip.transcribed_today.count %>
+        , 
+        última: <%= link_to transcript.strip.title, strip_path(transcript.strip) %>
+        por
+        <%= transcript.user_name %>
+        a las
+        <%= transcript.created_at %>)
+        [<%= link_to "Más", admin_transcripts_path %>]
+      <% end %>  
     </span>
-  
     <%= strip_collection.footer.maybe.html_safe.value %>
   </div>
 </div>

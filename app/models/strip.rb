@@ -40,6 +40,11 @@ class Strip < ActiveRecord::Base
   def to_param
     code
   end
+  
+  def self.transcribed_today
+    from = Time.now.beginning_of_day
+    Strip.joins(:transcripts).where(Transcript[:created_at] >= from).uniq
+  end
 
   def image_url
     strip_collection.image_url % {code: code}

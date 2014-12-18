@@ -73,6 +73,10 @@ class Object
     yield self
   end
 
+  def if_present_as
+    present? ? yield(self) : nil
+  end
+
   def in?(enumerable)
     enumerable.include?(self)
   end

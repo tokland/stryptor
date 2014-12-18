@@ -27,8 +27,7 @@ class Transcript < ActiveRecord::Base
     strip.transcripts.find(params[:id])
   end
   
-  def self.from_request(request, user)
-    params = request.params
+  def self.from_request(params, request_ip, user)
     collection = StripCollection.find_by_param!(params[:strip_collection_id])
     strip = collection.strips.find_by_param!(params[:strip_id])
     new_text = params[:transcript].maybe[:text].strip.value
@@ -41,7 +40,7 @@ class Transcript < ActiveRecord::Base
       anonuser_name = params[:transcript].maybe[:anonuser_name].strip.value
       strip.transcripts.new(
         text: new_text,
-        anonuser_ip: request.ip, 
+        anonuser_ip: request_ip, 
         anonuser_name: anonuser_name,
       )
     end
