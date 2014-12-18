@@ -1,7 +1,4 @@
-<%= with_layout "layout", {
-      :title => @strip.title,
-      :strip_collection => @strip.strip_collection, 
-    } do %>
+<%= with_layout "layout", title: @strip.title, strip_collection: @strip.strip_collection do %>
   <div class="ctitle">
     <%= @strip.title %> (<%= @pagination.index + 1 %> de <%= @pagination.total %>)
   </div>

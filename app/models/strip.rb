@@ -1,5 +1,7 @@
 class Strip < ActiveRecord::Base
   include PgSearch
+  include UsesParam
+  
   Pagination = Struct.new(:index, :total, :first, :previous, :next, :last)
 
   belongs_to :strip_collection
@@ -18,13 +20,11 @@ class Strip < ActiveRecord::Base
 
   pg_search_scope :search, against: :text, ignoring: :accents
   
+  uses_param :code
+  
   def self.random
     strips = Strip.without_transcriptions.presence || Strip.all 
     strips.offset(rand(strips.count)).first!
-  end
-  
-  def self.find_by_param!(value)
-    Strip.find_by!(code: value)
   end
   
   def self.first_by_params!(params)
@@ -37,10 +37,6 @@ class Strip < ActiveRecord::Base
     collection.strips.find_by_param!(params[:id])
   end
 
-  def to_param
-    code
-  end
-  
   def self.transcribed_today
     from = Time.now.beginning_of_day
     Strip.joins(:transcripts).where(Transcript[:created_at] >= from).uniq
