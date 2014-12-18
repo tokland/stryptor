@@ -1,4 +1,4 @@
-<%= render_layout "layout", {
+<%= with_layout "layout", {
       :title => @strip.title,
       :strip_collection => @strip.strip_collection, 
     } do %>
@@ -40,7 +40,7 @@
       <%= form.submit "Guardar" %>
       
       <%= link_to "Cancelar", "#", :accesskey => "c", :"data-toggle" => ".toggle-edit" %>
-      <%= link_to_history(@strip) %>
+      <%= link_to_history @strip %>
     <% end %>
 
     <div id="transcript-history" style="display: none">
@@ -63,6 +63,7 @@
     </div>
   </div>
   
-  <% suggestions = @strip.strip_collection.characters.maybe.split("|").value %>
-  <%= javascript_tag("init_strip({suggestions: #{suggestions.to_json}});") %>
+  <% @strip.strip_collection.characters.maybe.split("|").value.as do |suggestions| %>
+    <%= javascript_tag("init_strip({suggestions: #{suggestions.to_json}});") %>
+  <% end %>
 <% end %>

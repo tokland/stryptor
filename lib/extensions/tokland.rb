@@ -50,29 +50,21 @@ class Object
     valids.include?(self) ? nil : self
   end
   
-  def send_if_responds(method_name, *args, &block)
+  def send_if_responds_to(method_name, *args, &block)
     respond_to?(method_name) ? self.send(method_name, *args, &block) : nil
-  end
-
-  def or_else(options = {}, &block)
-    if options[:if]
-      self.send(options[:if]) ? yield : self
-    else
-      self || yield
-    end
   end
 
   def state_loop(initial_value, &block)
     value = initial_value
     loop do
-      value = (yield value) or break
+      value = yield(value) or break
     end
   end
   
   def as
     yield self
   end
-
+  
   def if_present_as
     present? ? yield(self) : nil
   end

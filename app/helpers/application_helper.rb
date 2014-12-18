@@ -9,7 +9,7 @@ module ApplicationHelper
     safe_join(output, join_string)
   end
 
-  def render_layout(name, namespace, &block)
+  def with_layout(name, namespace, &block)
     render(layout: name, locals: namespace, &block)
   end
 end

@@ -28,13 +28,13 @@
       <%= strip_collection.strips.as do |strips| %>
         <%= strips.with_transcriptions.count %>/<%= strips.count %> 
       <% end %>
-      <% Transcript.order("created_at desc").last.if_present_as do |transcript| %>
+      <% strip_collection.transcripts.order("created_at desc").first.if_present_as do |transcript| %>
         (Hoy: <%= Strip.transcribed_today.count %>
-        , 
-        última: <%= link_to transcript.strip.title, strip_path(transcript.strip) %>
+        -
+        Última: <%= link_to transcript.strip.title, strip_path(transcript.strip) %>
         por
         <%= transcript.user_name %>
-        a las
+        en
         <%= transcript.created_at %>)
         [<%= link_to "Más", admin_transcripts_path %>]
       <% end %>  

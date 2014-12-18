@@ -1,4 +1,4 @@
-<%= render_layout "layout", {
+<%= with_layout "layout", {
       :strip_collection => @strip_collection, 
       :title => @strip_collection.name,
     } do %>
@@ -27,7 +27,7 @@
     </div>
     
     <div class="transcript">
-      <%= content_tag(:pre, highlight(strip.text, params[:text].split), class: "text") %>
+      <%= content_tag :pre, highlight(strip.text, params[:text].split), class: "text" %>
     </div>
   <% end %>
   
