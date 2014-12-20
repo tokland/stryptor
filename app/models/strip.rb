@@ -27,11 +27,6 @@ class Strip < ActiveRecord::Base
     strips.offset(rand(strips.count)).first!
   end
   
-  def self.first_by_params!(params)
-    collection = StripCollection.find_by_param!(params[:strip_collection_id])
-    collection.strips.first!
-  end
-
   def self.find_by_params!(params)
     collection = StripCollection.find_by_param!(params[:strip_collection_id])
     collection.strips.find_by_param!(params[:id])
@@ -54,8 +49,7 @@ class Strip < ActiveRecord::Base
     "%s %s" % [strip_collection.name, code]
   end
   
-  def form_transcript(session)
-    anonuser_name = session[:anonuser_name] || "Anónimo"
+  def form_transcript(anonuser_name)
     transcripts.new(text: text, anonuser_name: anonuser_name)
   end
   

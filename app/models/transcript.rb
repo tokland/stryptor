@@ -1,6 +1,6 @@
 class Transcript < ActiveRecord::Base
-  belongs_to :strip, counter_cache: true
   belongs_to :user
+  belongs_to :strip, counter_cache: true
   
   after_commit :update_strip_text
   
@@ -14,7 +14,7 @@ class Transcript < ActiveRecord::Base
   end
 
   def user_name
-    (user ? user.name : anonuser_name) || "Anónimo" 
+    (user ? user.name : anonuser_name).presence || "Anónimo" 
   end
   
   def update_strip_text

@@ -3,7 +3,8 @@ class StripsController < ApplicationController
   respond_to :html
   
   def index
-    strip = Strip.first_by_params!(params)
+    collection = StripCollection.find_by_param!(params[:strip_collection_id])
+    strip = collection.strips.first!
     redirect_to(strip_path(strip))
   end
   

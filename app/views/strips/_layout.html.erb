@@ -24,19 +24,15 @@
   
   <div id="footer">
     <span class="info">
-      Transcripciones:
+      <%= link_to "Transcripciones", admin_transcripts_path %>:
       <%= strip_collection.strips.as do |strips| %>
         <%= strips.with_transcriptions.count %>/<%= strips.count %> 
       <% end %>
+      
       <% strip_collection.transcripts.order("created_at desc").first.if_present_as do |transcript| %>
         (Hoy: <%= Strip.transcribed_today.count %>
-        -
-        Última: <%= link_to transcript.strip.title, strip_path(transcript.strip) %>
-        por
-        <%= transcript.user_name %>
-        en
-        <%= transcript.created_at %>)
-        [<%= link_to "Más", admin_transcripts_path %>]
+        - Última: <%= link_to transcript.strip.title, strip_path(transcript.strip) %>
+        por <%= transcript.user_name %>, <%= transcript.created_at %>)
       <% end %>  
     </span>
     <%= strip_collection.footer.maybe.html_safe.value %>

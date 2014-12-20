@@ -24,7 +24,7 @@
       <%= link_to_history(@strip) %>
     </div>
 
-    <%= form_for @strip.form_transcript(session), 
+    <%= form_for @strip.form_transcript(session[:anonuser_name].presence || "Anónimo"), 
           :url => polymorphic_path([@strip.strip_collection, @strip, :transcripts]),
           :html => {:class => "toggle-edit", :style => "display: none"} do |form| %>
       <%= hidden_field_tag :token, "", :id => "transcript-token" %>
