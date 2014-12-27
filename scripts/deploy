@@ -2,3 +2,4 @@
 set -e
 git push heroku master
 heroku run rake db:migrate
+#RAILS_ENV=production be rspec

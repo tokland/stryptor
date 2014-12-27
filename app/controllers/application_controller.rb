@@ -5,6 +5,7 @@ class ApplicationController < ActionController::Base
   attr_reader :current_user
   helper_method :current_user, :user_signed_in?, :strip_path
   before_filter :store_location
+  layout false
   
   def index
     collection = StripCollection.first!

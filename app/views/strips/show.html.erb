@@ -1,66 +1,68 @@
-<%= with_layout "layout", title: @strip.title, strip_collection: @strip.strip_collection do %>
-  <div class="ctitle">
-    <%= @strip.title %> (<%= @pagination.index + 1 %> de <%= @pagination.total %>)
-  </div>
-  
-  <ul class="comic-nav">
-    <li><%= link_to "|<", strip_path(@pagination.first), :accesskey => "f" %></li>
-    <li><%= link_to "< Anterior", strip_path(@pagination.previous), :accesskey => "p" %></li>
-    <li><%= link_to "Aleatorio", random_path_for_collection_strip(@strip), :accesskey => "r" %></li>
-    <li><%= link_to "Siguiente >", strip_path(@pagination.next), :accesskey => "n" %></li>
-    <li><%= link_to ">|", strip_path(@pagination.last), :accesskey => "l" %></li>
-  </ul>
-  
-  <div class="comic">
-    <%= image_tag @strip.image.url, :width => "800", :height => "228", 
-          :alt => @strip.text, :title => @strip.text %>
-  </div>
-  
-  <div class="transcript" class="<%= current_user ? 'editable' : '' %>">
-    <div class="toggle-edit">
-      <%= content_tag(:pre, @strip.text, class: "text") %>
-     
-      <%= link_to "Editar", "#", :accesskey => "e", :"data-toggle" => ".toggle-edit" %>
-      <%= link_to_history(@strip) %>
+<%= with_public_layout strip: @strip do %>
+  <%= with_layout "strips/layout", strip_collection: @strip.strip_collection do %>
+    <div class="ctitle">
+      <%= @strip.title %> (<%= @pagination.index + 1 %> de <%= @pagination.total %>)
     </div>
+    
+    <ul class="comic-nav">
+      <li><%= link_to "|<", strip_path(@pagination.first), :accesskey => "f" %></li>
+      <li><%= link_to "< Anterior", strip_path(@pagination.previous), :accesskey => "p" %></li>
+      <li><%= link_to "Aleatorio", random_path_for_collection_strip(@strip), :accesskey => "r" %></li>
+      <li><%= link_to "Siguiente >", strip_path(@pagination.next), :accesskey => "n" %></li>
+      <li><%= link_to ">|", strip_path(@pagination.last), :accesskey => "l" %></li>
+    </ul>
+    
+    <div class="comic">
+      <%= image_tag @strip.image.url, :width => "800", :height => "228", 
+            :alt => @strip.text, :title => @strip.text %>
+    </div>
+    
+    <div class="transcript" class="<%= current_user ? 'editable' : '' %>">
+      <div class="toggle-edit">
+        <%= content_tag(:pre, @strip.text, class: "text") %>
+       
+        <%= link_to "Editar", "#", :accesskey => "e", :"data-toggle" => ".toggle-edit" %>
+        <%= link_to_history(@strip) %>
+      </div>
 
-    <%= form_for @strip.form_transcript(session[:anonuser_name].presence || "Anónimo"), 
-          :url => polymorphic_path([@strip.strip_collection, @strip, :transcripts]),
-          :html => {:class => "toggle-edit", :style => "display: none"} do |form| %>
-      <%= hidden_field_tag :token, "", :id => "transcript-token" %>
-      <%= form.text_area :text %>
-      
-      <% unless user_signed_in? %>
-        <%= form.label :anonuser_name, "Tu nombre" %>:
-        <%= form.text_field :anonuser_name %>
-      <% end %>
-      <%= form.submit "Guardar" %>
-      
-      <%= link_to "Cancelar", "#", :accesskey => "c", :"data-toggle" => ".toggle-edit" %>
-      <%= link_to_history @strip %>
-    <% end %>
-
-    <div id="transcript-history" style="display: none">
-      <ul>
-        <% @strip.transcripts.includes(:user).by_version(:asc).
-             map.with_index.reverse_each do |transcript, idx| %>
-          <li>
-            <%= idx + 1 %>.
-            <%= transcript.user_name %> -
-            <%= transcript.created_at.utc.strftime("%d/%m/%Y %H:%M UTC") %>
-            -
-            <%= link_to "texto", "javascript:void()", 
-                  :"data-toggle" => "#transcript-#{transcript.id}" %>
-            <%= content_tag :pre, transcript.text, 
-                  :id => "transcript-#{transcript.id}", 
-                  :style => "display:none" %>   
-          </li>
+      <%= form_for @strip.form_transcript(session[:anonuser_name].presence || "Anónimo"), 
+            :url => polymorphic_path([@strip.strip_collection, @strip, :transcripts]),
+            :html => {:class => "toggle-edit", :style => "display: none"} do |form| %>
+        <%= hidden_field_tag :token, "", :id => "transcript-token" %>
+        <%= form.text_area :text %>
+        
+        <% unless user_signed_in? %>
+          <%= form.label :anonuser_name, "Tu nombre" %>:
+          <%= form.text_field :anonuser_name %>
         <% end %>
-      </ul>
+        <%= form.submit "Guardar" %>
+        
+        <%= link_to "Cancelar", "#", :accesskey => "c", :"data-toggle" => ".toggle-edit" %>
+        <%= link_to_history @strip %>
+      <% end %>
+
+      <div id="transcript-history" style="display: none">
+        <ul>
+          <% @strip.transcripts.includes(:user).by_version(:asc).
+               map.with_index.reverse_each do |transcript, idx| %>
+            <li>
+              <%= idx + 1 %>.
+              <%= transcript.user_name %> -
+              <%= transcript.created_at.utc.strftime("%d/%m/%Y %H:%M UTC") %>
+              -
+              <%= link_to "texto", "javascript:void()", 
+                    :"data-toggle" => "#transcript-#{transcript.id}" %>
+              <%= content_tag :pre, transcript.text, 
+                    :id => "transcript-#{transcript.id}", 
+                    :style => "display:none" %>   
+            </li>
+          <% end %>
+        </ul>
+      </div>
     </div>
-  </div>
-  
-  <% @strip.strip_collection.characters.maybe.split("|").value.as do |suggestions| %>
-    <%= javascript_tag("init_strip({suggestions: #{suggestions.to_json}});") %>
+    
+    <% @strip.strip_collection.characters.maybe.split("|").value.as do |suggestions| %>
+      <%= javascript_tag("init_strip({suggestions: #{suggestions.to_json}});") %>
+    <% end %>
   <% end %>
 <% end %>

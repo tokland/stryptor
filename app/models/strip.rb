@@ -18,9 +18,8 @@ class Strip < ActiveRecord::Base
   scope :without_transcriptions, proc { where(Strip[:text] == nil) }
   scope :with_transcriptions, proc { where(Strip[:text] ^ nil) }
 
-  pg_search_scope :search, against: :text, ignoring: :accents
-  
   uses_param :code
+  pg_search_scope :search, against: :text, ignoring: :accents
   
   def self.random
     strips = Strip.without_transcriptions.presence || Strip.all 
