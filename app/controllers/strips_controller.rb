@@ -11,6 +11,7 @@ class StripsController < ApplicationController
   def show
     @strip = Strip.find_by_params!(params)
     @pagination = @strip.pagination
+    @vote = current_user.maybe.votes.find_by(voteable: @strip).__value__
   end
   
   def random

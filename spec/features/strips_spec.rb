@@ -303,4 +303,42 @@ describe 'Strip', :type => :feature, :js => true do
       end
     end
   end
+  
+  describe "A non-logged user" do
+    describe "goes to a non-rated strip" do
+      before { page.visit '/mafalda/001' }
+      
+      describe "and clicks on a rating star" do
+        before { page.click_link("rating-3") }
+        
+        it 'redirects to oauth' do
+          expect(page.current_path).to eq("/dialog/oauth")
+        end
+      end
+    end
+  end
+
+  describe "A logged user" do
+    before { page.set_rack_session(:user_id => user.id)}
+    
+    describe "that goes to a non-rated strip" do 
+      before { page.visit '/mafalda/001' }
+
+      describe "and clicks on a rating star" do
+        before { page.click_link("rating-3") }
+    
+        it 'sees the votes count updated' do
+          expect(page).to have_selector("#rating-info", text: "Valoración: 3.0 (de 1 usuarios)")
+        end
+        
+        it 'sees HIS rating in the stars' do
+          expect(page).to have_selector("a#rating-1.voted")
+          expect(page).to have_selector("a#rating-2.voted")
+          expect(page).to have_selector("a#rating-3.voted")
+          expect(page).to have_selector("a#rating-4.non-voted")
+          expect(page).to have_selector("a#rating-5.non-voted")
+        end
+      end
+    end
+  end
 end

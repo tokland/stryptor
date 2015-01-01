@@ -7,6 +7,7 @@ Rails.application.routes.draw do
   get '/auth/failure' => 'sessions#failure'
   
   get '/admin/transcripts' => 'transcripts#index'
+  post '/votes/:type/:id/:value' => 'votes#create', :as => :vote
 
   resources :strip_collections, :path => "" do  
     resources :strips, :only => [:index, :show], :path => "" do

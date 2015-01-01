@@ -5,9 +5,9 @@ class Strip < ActiveRecord::Base
   Pagination = Struct.new(:index, :total, :first, :previous, :next, :last)
 
   belongs_to :strip_collection
-  has_many :transcripts, inverse_of: :strip, dependent: :destroy 
-  has_attached_file :image, 
-    default_url: proc { |image| image.instance.image_url }
+  has_attached_file :image, default_url: proc { |image| image.instance.image_url }
+  has_many :transcripts, inverse_of: :strip, dependent: :destroy
+  has_many :votes, dependent: :destroy, as: :voteable
     
   validates :strip_collection, presence: true
   validates :position, presence: true, uniqueness: {scope: :strip_collection_id} 
@@ -45,7 +45,7 @@ class Strip < ActiveRecord::Base
   end
   
   def title
-    "%s %s" % [strip_collection.name, code]
+    "%{collection} %{strip}" % {collection: strip_collection.name, strip: code}
   end
   
   def form_transcript(anonuser_name)

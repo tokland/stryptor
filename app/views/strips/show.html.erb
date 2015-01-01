@@ -16,6 +16,8 @@
       <%= image_tag @strip.image.url, :width => "800", :height => "228", 
             :alt => @strip.text, :title => @strip.text %>
     </div>
+
+    <%= render :partial => "rating", :locals => {:strip => @strip, :vote => @vote} %>
     
     <div class="transcript" class="<%= current_user ? 'editable' : '' %>">
       <div class="toggle-edit">

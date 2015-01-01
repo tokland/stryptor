@@ -1,4 +1,10 @@
 module Enumerable
+  def frequency
+    Hash.new(0).tap do |f|
+      each { |x| f[x] += 1 }
+    end
+  end
+  
   def map_compact(&block)
     self.map(&block).compact
   end
@@ -42,11 +48,11 @@ class Object
     !!self
   end
 
-  def whitelist(*valids)
+  def whitelist(valids)
     valids.include?(self) ? self : nil
   end
 
-  def blacklist(*valids)
+  def blacklist(valids)
     valids.include?(self) ? nil : self
   end
   
@@ -59,6 +65,7 @@ class Object
     loop do
       value = yield(value) or break
     end
+    value
   end
   
   def as

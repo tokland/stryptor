@@ -1,0 +1,26 @@
+<div id="rating" data-current-rating="<%= vote.try(:value) %>" >
+  <span id="rating-info">
+    Valoración: 
+    <span id="rating-total">
+      <% if strip.votes.exists? %>
+        <%= "%0.1f" % strip.votes.average(:value).to_f %>
+      <% else %>
+        -
+      <% end %>
+    </span>
+    (de <span id="rating-count"><%= strip.votes.count %></span> usuarios)
+  </span> 
+  - 
+  <span id="ratings">
+    <% 1.upto(5).each do |n| %>
+      <%= link_to n,
+            user_signed_in? ? 
+              vote_path(:type => :strip, :id => strip.id, :value => n) :
+              signin_path,
+            :class => ["rating", ("can-vote" if user_signed_in?), 
+                       vote && n <= vote.value ? "voted" : "non-voted"].compact, 
+            :id => "rating-#{n}", :"data-rating" => n %>
+    <% end %>
+  </span>
+  <%= image_tag "spinner-small.gif", :style => "display: none", :class => "spinner" %>
+</div>

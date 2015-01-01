@@ -68,11 +68,53 @@ autocomplete = (suggestions) ->
 	  minLength: 1
 	  wrapInput: true
   })
+
+set_user_rating = ->
+    rating_string = $("#rating").attr("data-current-rating")
+    if rating_string
+      rating = parseInt($("#rating").attr("data-current-rating"))
+      $(".rating").each ->
+        link = $(this)
+        if link.attr("data-rating") <= rating
+          link.addClass("voted")
+        else
+          link.removeClass("voted")
+
+init_ratings = ->
+  $(".rating.can-vote").click stop_event (ev) ->
+    el = $(ev.target)
+    $(".spinner").show()
+    $.ajax 
+      type: "POST"
+      url: el.attr("href")
+      complete: (res) ->
+        $(".spinner").hide()
+        set_user_rating()
+      success: (res) -> 
+        info = res.info
+        $("#rating-total").text(info.average)
+        $("#rating-count").text(info.count)
+        $("#rating").attr("data-current-rating", res.value)
+    
+  $(".rating").hover (ev) ->
+    el = $(this)
+    rating = parseInt(el.attr("data-rating"))
+    $(".rating").removeClass("voted")
+    $(".rating").each ->
+      link = $(this)
+      if link.attr("data-rating") <= rating
+        link.addClass("selected")
+      else
+        link.removeClass("selected")
+
+  $("#ratings").mouseleave (ev) ->
+    $(".rating").removeClass("selected")
+    set_user_rating()
   
 set_token = ->
   $("#new_transcript").submit ->
     $("#transcript-token").val("1234")
-  
+
 window.init_strip = (options) ->
   $ ->
     autocomplete(options.suggestions)
@@ -83,3 +125,4 @@ $ ->
   init_close()
   submit_forms_on_control_enter()
   turbolink_load_cursor()
+  init_ratings()

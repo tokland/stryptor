@@ -40,6 +40,34 @@ img{
 	border:0
 }
 
+a.rating {
+  color: transparent; 
+  background: url('../assets/ratings-sprite.png') 0 107px;
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+}
+
+a.rating.selected {
+  background: url('../assets/ratings-sprite.png') 0 65px;
+}
+
+a.rating.voted {
+  background: url('../assets/ratings-sprite.png') 0 93px;
+}
+
+.spinner {
+  min-width: 12px;
+  width: 12px;
+  height: 12px;
+}
+
+#rating {
+  float: right;
+  margin-right: 50px;
+  margin-top: 10px
+}
+
 .box { 
 	background:white;
 	border-style:solid;
