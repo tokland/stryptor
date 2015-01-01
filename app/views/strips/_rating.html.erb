@@ -17,6 +17,7 @@
             user_signed_in? ? 
               vote_path(:type => :strip, :id => strip.id, :value => n) :
               signin_path,
+            :accesskey => n,
             :class => ["rating", ("can-vote" if user_signed_in?), 
                        vote && n <= vote.value ? "voted" : "non-voted"].compact, 
             :id => "rating-#{n}", :"data-rating" => n %>
