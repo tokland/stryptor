@@ -90,11 +90,13 @@ init_ratings = ->
       complete: (res) ->
         $(".spinner").hide()
         set_user_rating()
-      success: (res) -> 
-        info = res.info
-        $("#rating-total").text(info.average)
-        $("#rating-count").text(info.count)
-        $("#rating").attr("data-current-rating", res.value)
+      success: (res) ->
+        if res.status 
+          info = res.info
+          $("#rating-total").text(info.average)
+          $("#rating-count").text(info.count)
+          $(".visible-on-ratings").show()
+          $("#rating").attr("data-current-rating", res.value)
     
   $(".rating").hover (ev) ->
     el = $(this)

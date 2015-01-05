@@ -3,7 +3,8 @@
     <% if user_signed_in? %>
       <%= current_user.name %> [<%= link_to "Salir", signout_path %>]
     <% else %>
-      <%= link_to "Entrar ".html_safe + image_tag("facebook.png", :size => "32"), signin_path %>
+      <%= link_to "Entrar ".html_safe + image_tag("facebook.png", :size => "32"),
+            signin_path_with_redirect %>
     <% end %>
   </div>
   
@@ -26,7 +27,7 @@
         <%= strips.with_transcriptions.count %>/<%= strips.count %> 
       <% end %>
       
-      <% strip_collection.transcripts.order("created_at desc").first.if_present_as do |transcript| %>
+      <% strip_collection.transcripts.by_version(:desc).first.if_present_as do |transcript| %>
         (Hoy: <%= Strip.transcribed_today.count %>
         - Última: <%= link_to transcript.strip.title, strip_path(transcript.strip) %>
         por <%= transcript.user_name %>, <%= transcript.created_at %>)

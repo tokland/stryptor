@@ -16,12 +16,17 @@ module ApplicationHelper
   def with_public_layout(strip_collection: nil, strip: nil, &block)
     namespace = case
     when strip_collection
-      {title: strip_collection.name, favicon: strip_collection.icon_url}
+      {title: strip_collection.name, favicon: strip_collection.icon_url, image_src: nil}
     when strip
-      {title: strip.title, favicon: strip.strip_collection.icon_url}
+      {title: strip.title, favicon: strip.strip_collection.icon_url, image_src: strip.image.url}
     else
-      {title: nil, favicon: nil}
+      {title: nil, favicon: nil, image_src: nil}
     end
     with_layout("layouts/public", namespace, &block)  
+  end
+  
+  def signin_path_with_redirect(params = {})
+    other_params = request.get? ? {redirect_url: request.fullpath} : params 
+    signin_path(params.merge(other_params))
   end
 end

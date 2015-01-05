@@ -7,14 +7,19 @@ class VotesController < ApplicationController
     respond_to do |format|
       if @vote.save
         format.json do
-          render(:json => {
-            status: :ok, 
-            value: @vote.value, 
+          render(json: {
+            status: true,
+            value: @vote.value,
             info: @vote.voteable.votes.info,
           })
         end
       else
-        format.json { render(:json => {:status => :error}) }
+        format.json do
+          render(json: {
+            status: false,
+            error: @vote.errors.full_messages.to_sentence,
+          })
+        end
       end
     end
   end

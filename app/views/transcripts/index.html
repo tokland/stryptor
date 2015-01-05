@@ -1,31 +1,33 @@
-<div id="middle-container">
-  <div class="box">
-    <h2>
-      Transcritas: <%= Strip.with_transcriptions.count %> / <%= Strip.count %> 
-    </h2>
-    <%= paginate @transcripts %>
-    
-    <% @transcripts.includes(:user).group_by { |t| t.created_at.to_date }.each do |date, transcripts| %>
-      <h3>
-        <%= date.strftime("%d/%m/%Y") %> (<%= transcripts.uniq(&:strip).size %>)
-      </h3>
+<%= with_public_layout do %>
+  <div id="middle-container">
+    <div class="box">
+      <h2>
+        Transcritas: <%= Strip.with_transcriptions.count %> / <%= Strip.count %> 
+      </h2>
+      <%= paginate @transcripts %>
       
-      <ul class="transcripts">
-        <% transcripts.group_by(&:strip).each do |strip, transcripts_for_strip| %>
-          <li>
-            <%= link_to strip.title, strip_path(strip) %>:
-            <%= render_join(transcripts_for_strip, " | ") do |transcript| %>
-              <%= transcript.user_name %>
-              (<%= transcript.created_at.strftime("%H:%M") %>)
-              <%= link_to "[txt]", "javascript:void()", 
-                    :"data-toggle" => "#transcript-#{transcript.id}" %>
-              <%= content_tag :pre, transcript.text, 
-                    :id => "transcript-#{transcript.id}", 
-                    :style => "display:none" %>
-            <% end %>
-          </li>
-        <% end %>
-      </ul>
-    <% end %>
-  <div>
-</div>
+      <% @transcripts.includes(:user).group_by { |t| t.created_at.to_date }.each do |date, transcripts| %>
+        <h3>
+          <%= date.strftime("%d/%m/%Y") %> (<%= transcripts.uniq(&:strip).size %>)
+        </h3>
+        
+        <ul class="transcripts">
+          <% transcripts.group_by(&:strip).each do |strip, transcripts_for_strip| %>
+            <li>
+              <%= link_to strip.title, strip_path(strip) %>:
+              <%= render_join(transcripts_for_strip, " | ") do |transcript| %>
+                <%= transcript.user_name %>
+                (<%= transcript.created_at.strftime("%H:%M") %>)
+                <%= link_to "[txt]", "javascript:void(0)", 
+                      :"data-toggle" => "#transcript-#{transcript.id}" %>
+                <%= content_tag :pre, transcript.text, 
+                      :id => "transcript-#{transcript.id}", 
+                      :style => "display:none" %>
+              <% end %>
+            </li>
+          <% end %>
+        </ul>
+      <% end %>
+    <div>
+  </div>
+<% end %>

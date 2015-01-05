@@ -1,5 +1,5 @@
 #!/bin/sh
 set -e
 heroku pgbackups:capture
-TS=$(date +%Y-%m-%d--%H:%M:%S)
+TS=$(date +%Y-%m-%d-%H:%M:%S)
 curl -o bak/strytor_pro-$TS.sql $(heroku pgbackups:url)

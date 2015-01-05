@@ -52,7 +52,7 @@
               <%= transcript.user_name %> -
               <%= transcript.created_at.utc.strftime("%d/%m/%Y %H:%M UTC") %>
               -
-              <%= link_to "texto", "javascript:void()", 
+              <%= link_to "texto", "javascript:void(0)", 
                     :"data-toggle" => "#transcript-#{transcript.id}" %>
               <%= content_tag :pre, transcript.text, 
                     :id => "transcript-#{transcript.id}", 

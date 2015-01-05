@@ -4,7 +4,9 @@ class Vote < ActiveRecord::Base
   belongs_to :user
   belongs_to :voteable, polymorphic: true
   
-  validates :value, presence: true
+  validates :value, presence: true,
+    numericality: {only_integer: true, greater_than: 0, less_than_or_equal_to: 5}
+
   validates :voteable, presence: true
   validates :user, uniqueness: {scope: :voteable}
 
@@ -23,11 +25,11 @@ class Vote < ActiveRecord::Base
     
     if vtype
       attrs = {voteable_type: vtype.classify, voteable_id: params[:id]}
-      vote = user.votes.find_or_initialize_by(attrs)
+      vote = user.votes.where(attrs).first_or_initialize
       vote.value = params[:value]
       vote
     else
-      raise ActiveRecord::RecordNotFound
+      raise(ActiveRecord::RecordNotFound)
     end
   end
 end

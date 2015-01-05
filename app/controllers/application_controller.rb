@@ -1,11 +1,13 @@
 class ApplicationController < ActionController::Base
   extend Memoist
-  protect_from_forgery with: :exception
+  
   before_filter :load_current_user
-  attr_reader :current_user
-  helper_method :current_user, :user_signed_in?, :strip_path
   before_filter :store_location
-  layout false
+  
+  protect_from_forgery with: :exception
+  helper_method :current_user, :user_signed_in?, :strip_path
+  attr_reader :current_user
+  layout nil
   
   def index
     collection = StripCollection.first!
@@ -15,7 +17,10 @@ class ApplicationController < ActionController::Base
   private
 
   def store_location
-    unless controller_name == "sessions"
+    case
+    when params[:redirect_url]
+      session[:redirect_url] = params[:redirect_url]
+    when request.get? && controller_name != "sessions"
       session[:redirect_url] = request.fullpath
     end
   end
