@@ -69,11 +69,11 @@ autocomplete = (suggestions) ->
 	  wrapInput: true
   })
 
-set_user_rating = ->
-    rating_string = $("#rating").attr("data-current-rating")
+set_user_rating = (box) ->
+    rating_string = box.attr("data-current-rating")
     if rating_string
-      rating = parseInt($("#rating").attr("data-current-rating"))
-      $(".rating").each ->
+      rating = parseInt(box.attr("data-current-rating"))
+      box.find(".rating").each ->
         link = $(this)
         if link.attr("data-rating") <= rating
           link.addClass("voted")
@@ -83,35 +83,39 @@ set_user_rating = ->
 init_ratings = ->
   $(".rating.can-vote").click stop_event (ev) ->
     el = $(ev.target)
-    $(".spinner").show()
+    box = el.closest(".rating-box")
+    box.find(".spinner").show()
     $.ajax 
       type: "POST"
       url: el.attr("href")
       complete: (res) ->
-        $(".spinner").hide()
-        set_user_rating()
+        box.find(".spinner").hide()
+        set_user_rating(box)
       success: (res) ->
-        if res.status 
+        if res.status
           info = res.info
-          $("#rating-total").text(info.average)
-          $("#rating-count").text(info.count)
-          $(".visible-on-ratings").show()
-          $("#rating").attr("data-current-rating", res.value)
+          box = el.closest(".rating-box")
+          box.find(".rating-total").text(info.average)
+          box.find(".rating-count").text(info.count)
+          box.find(".visible-on-ratings").show()
+          box.attr("data-current-rating", res.value)
     
   $(".rating").hover (ev) ->
     el = $(this)
+    box = el.closest(".rating-box")
     rating = parseInt(el.attr("data-rating"))
-    $(".rating").removeClass("voted")
-    $(".rating").each ->
+    box.find(".rating").removeClass("voted")
+    box.find(".rating").each ->
       link = $(this)
       if link.attr("data-rating") <= rating
         link.addClass("selected")
       else
         link.removeClass("selected")
 
-  $("#ratings").mouseleave (ev) ->
-    $(".rating").removeClass("selected")
-    set_user_rating()
+  $(".ratings").mouseleave (ev) ->
+    box = $(ev.target).closest(".rating-box")
+    box.find(".rating").removeClass("selected")
+    set_user_rating(box)
   
 set_token = ->
   $("#new_transcript").submit ->

@@ -24,6 +24,8 @@
         <% end %>
       </div>
       
+      <%= render :partial => "rating", :locals => {:strip => strip} %>
+      
       <div class="transcript">
         <%= content_tag :pre, highlight(strip.text, params[:text].split), class: "text" %>
       </div>

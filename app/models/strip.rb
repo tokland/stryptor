@@ -63,4 +63,8 @@ class Strip < ActiveRecord::Base
       previous: strips.where(Strip[:position] < position).last,
     )
   end
+  
+  def vote_by(user) 
+    user ? user.votes.find_by(voteable: self) : nil
+  end
 end

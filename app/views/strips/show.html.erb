@@ -17,7 +17,7 @@
             :alt => @strip.text, :title => @strip.text %>
     </div>
 
-    <%= render :partial => "rating", :locals => {:strip => @strip, :vote => @vote} %>
+    <%= render :partial => "rating", :locals => {:strip => @strip} %>
     
     <div class="transcript" class="<%= current_user ? 'editable' : '' %>">
       <div class="toggle-edit">

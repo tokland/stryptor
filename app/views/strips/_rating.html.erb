@@ -1,17 +1,19 @@
-<div id="rating" data-current-rating="<%= vote.try(:value) %>" >
-  <span id="rating-info">
+<% vote = strip.vote_by(current_user) %>
+
+<div class="rating-box" data-current-rating="<%= vote.try(:value) %>" >
+  <span class="rating-info">
     Valoración: 
     <span class="visible-on-ratings" style="<%= 'display: none' unless strip.votes.exists? %>">
-      <span id="rating-total">
+      <span class="rating-total">
         <%= "%0.1f" % strip.votes.average(:value).to_f %>
       </span>
-      (de <span id="rating-count">
+      (de <span class="rating-count">
         <%= strip.votes.count %>
       </span> usuarios)
     </span>
   </span>
   
-  <span id="ratings">
+  <span class="ratings">
     <% 1.upto(5).each do |n| %>
       <%= link_to n,
             user_signed_in? ? 
