@@ -2,8 +2,8 @@ class TranscriptsController < ApplicationController
   before_filter :check_antispam_token, :only => :create
   
   def index
-    #Strip.joins(:transcripts).where(Transcript[:created_at] >= start_day)
-    @transcripts = Transcript.by_version(:desc).page(params[:page]).per(1000)
+    @strip_collection = StripCollection.find_by_param!(params[:strip_collection_id]) 
+    @transcripts = @strip_collection.transcripts.by_version(:desc).page(params[:page]).per(1000)
   end
   
   def show

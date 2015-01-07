@@ -5,6 +5,8 @@ feature 'Admin', js: true do
 
   background do
     FactoryGirl.create(:strip_collection, {
+      :code => "mafalda",
+      :name => "Mafalda",
       :strips => [
         FactoryGirl.build(:strip, :code => "001", :position => 0, :transcripts => [
           FactoryGirl.build(:transcript, {:user => user, :text => "001-text1"}),
@@ -18,7 +20,7 @@ feature 'Admin', js: true do
   end
     
   feature 'transcripts' do
-    background { page.visit '/admin/transcripts' }
+    background { page.visit '/mafalda/transcripts' }
     
     it "renders transcripts grouped by strip" do
       expect(page).to have_selector('.transcripts li', count: 2)

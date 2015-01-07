@@ -22,7 +22,7 @@
   
   <div id="footer">
     <span class="info">
-      <%= link_to "Transcripciones", admin_transcripts_path %>:
+      <%= link_to "Transcripciones", strip_collection_transcripts_path(strip_collection) %>:
       <%= strip_collection.strips.as do |strips| %>
         <%= strips.with_transcriptions.count %>/<%= strips.count %> 
       <% end %>

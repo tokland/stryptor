@@ -1,8 +1,9 @@
 <%= with_public_layout do %>
-  <div id="middle-container">
-    <div class="box">
+  <%= with_layout "strips/layout", strip_collection: @strip_collection do %>
+    <div>
       <h2>
-        Transcritas: <%= Strip.with_transcriptions.count %> / <%= Strip.count %> 
+        <%= link_to(@strip_collection.name, @strip_collection) %> - Historial de transcripciones: 
+        <%= Strip.with_transcriptions.count %> / <%= Strip.count %> 
       </h2>
       <%= paginate @transcripts %>
       
@@ -28,6 +29,6 @@
           <% end %>
         </ul>
       <% end %>
-    <div>
-  </div>
+    </div>
+  <% end %>
 <% end %>

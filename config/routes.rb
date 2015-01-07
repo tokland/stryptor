@@ -6,10 +6,11 @@ Rails.application.routes.draw do
   get '/auth/:provider/callback' => 'sessions#create'
   get '/auth/failure' => 'sessions#failure'
   
-  get '/admin/transcripts' => 'transcripts#index'
   post '/votes/:type/:id/:value' => 'votes#create', :as => :vote
 
   resources :strip_collections, :path => "" do  
+    get 'transcripts' => 'transcripts#index'
+    
     resources :strips, :only => [:index, :show], :path => "" do
       collection do
         get :random
