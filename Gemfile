@@ -20,6 +20,7 @@ gem 'jquery-ui-rails'
 gem 'migration_data'
 gem 'exception_notification'
 gem 'pg_search'
+gem "rails-i18n"
 
 group :development do
   gem 'better_errors'

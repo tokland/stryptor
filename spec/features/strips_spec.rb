@@ -328,7 +328,7 @@ describe 'Strip', :type => :feature, :js => true do
         before { page.click_link("rating-3") }
     
         it 'sees the votes count updated' do
-          expect(page).to have_selector("#rating-info",
+          expect(page).to have_selector(".rating-info",
             text: "Valoración: 3.0 (de 1 usuarios)")
         end
         

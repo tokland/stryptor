@@ -56,11 +56,8 @@ turbolink_load_cursor = ->
     $(document.body).removeClass("loading")
     repaintCursor()
 
-tooltip = ->
-  $(document).tooltip()
-
 autocomplete = (suggestions) ->
-  $("#transcript_text").tabcomplete(suggestions || [], {
+  $("#transcript_text").tabcomplete(suggestions, {
 	  after: ""
 	  arrowKeys: false
 	  hint: "placeholder"
@@ -70,15 +67,15 @@ autocomplete = (suggestions) ->
   })
 
 set_user_rating = (box) ->
-    rating_string = box.attr("data-current-rating")
-    if rating_string
-      rating = parseInt(box.attr("data-current-rating"))
-      box.find(".rating").each ->
-        link = $(this)
-        if link.attr("data-rating") <= rating
-          link.addClass("voted")
-        else
-          link.removeClass("voted")
+  rating_string = box.attr("data-current-rating")
+  if rating_string
+    box.find(".rating").each ->
+      link = $(this)
+      rating = parseInt(rating_string)
+      if link.attr("data-rating") <= rating
+        link.addClass("voted")
+      else
+        link.removeClass("voted")
 
 init_ratings = ->
   $(".rating.can-vote").click stop_event (ev) ->
@@ -125,10 +122,12 @@ window.init_strip = (options) ->
   $ ->
     autocomplete(options.suggestions)
     set_token()
-    
-$ ->
-  init_toggle()
-  init_close()
-  submit_forms_on_control_enter()
-  turbolink_load_cursor()
-  init_ratings()
+
+main = ->
+  $ ->
+    init_toggle()
+    init_close()
+    submit_forms_on_control_enter()
+    init_ratings()
+  
+main()

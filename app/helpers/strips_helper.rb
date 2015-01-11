@@ -9,4 +9,10 @@ module StripsHelper
         :accesskey => "h", :"data-toggle" => "#transcript-history")
     end
   end
+  
+  def transcribed_today_count 
+    user_names = Strip.transcribed_today.map { |s| s.transcripts.first }.map(&:user_name)
+    counts = user_names.frequency.sort_by(&:second).reverse
+    counts.map { |username, count| "#{username}: #{count}" }.join(", ")
+  end
 end

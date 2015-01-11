@@ -14,7 +14,7 @@ module StryptorSeed
     
     images.sort.each_with_index do |image_path, index|
       image_filename = File.basename(image_path)
-      volume, number = image_filename.match(/mafalda-(\d+)-(\d+)/).captures
+      volume, number = image_filename.match(/mafalda-(\w+)-(\d+)/).captures
       code = volume + "-" + number
       attributes = {code: code, position: index, strip_collection: collection}
       $stderr.puts("Strip: #{attributes}")
