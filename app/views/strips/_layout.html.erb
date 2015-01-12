@@ -28,7 +28,7 @@
       <% end %>
       
       <% strip_collection.transcripts.by_version(:desc).first.if_present_as do |transcript| %>
-        - Hoy: <%= Strip.transcribed_today.count %> (<%= transcribed_today_count %>)
+        - Hoy: <%= Strip.transcribed_today.count %> <%= transcribed_today_count %>
         - Última: <%= link_to transcript.strip.title, strip_path(transcript.strip) %>
         por <%= transcript.user_name %> hace <%= time_ago_in_words(transcript.created_at) %>
       <% end %>  
