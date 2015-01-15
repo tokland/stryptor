@@ -23,8 +23,11 @@
   <div id="footer">
     <span class="info">
       <%= link_to "Transcripciones", strip_collection_transcripts_path(strip_collection) %>:
-      <%= strip_collection.strips.as do |strips| %>
-        <%= strips.with_transcriptions.count %>/<%= strips.count %> 
+      <% strip_collection.strips.as do |strips| %>
+        <% [strips.with_transcriptions.count, strips.count].as do |tcount, count| %>
+          <%= tcount %>/<%= count %>
+          (<%= count >  0 ? "%0.1f" % (100.0*tcount / count) : "-"  %>%)
+        <% end %>  
       <% end %>
       
       <% strip_collection.transcripts.by_version(:desc).first.if_present_as do |transcript| %>
@@ -33,6 +36,7 @@
         por <%= transcript.user_name %> hace <%= time_ago_in_words(transcript.created_at) %>
       <% end %>  
     </span>
+    
     <%= strip_collection.footer.maybe.html_safe.value %>
   </div>
 </div>
