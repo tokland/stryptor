@@ -61,6 +61,8 @@
           <% end %>
         </ul>
       </div>
+      
+      <%= render :partial => '/shared/disqus' %>
     </div>
     
     <% @strip.strip_collection.characters.maybe.split("|").value.as do |suggestions| %>
