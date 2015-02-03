@@ -3,13 +3,11 @@
 <div class="rating-box" data-current-rating="<%= vote.try(:value) %>" >
   <span class="rating-info">
     Valoración: 
-    <span class="visible-on-ratings" style="<%= 'display: none' unless strip.votes.exists? %>">
+    <span class="visible-on-ratings" style="<%= 'display: none' if strip.votes.empty? %>">
       <span class="rating-total">
         <%= "%0.1f" % strip.votes.average(:value).to_f %>
       </span>
-      (de <span class="rating-count">
-        <%= strip.votes.count %>
-      </span> usuarios)
+      (de <span class="rating-count"><%= strip.votes.count %></span> usuarios)
     </span>
   </span>
   

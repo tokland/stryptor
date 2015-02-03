@@ -8,7 +8,7 @@ require 'rails_helper'
 Capybara.configure do |config|
   config.javascript_driver = (ENV["CAPYBARA_DRIVER"] || :webkit).to_sym
   config.server_host = "localhost"
-  config.server_port = 30000
+  #config.server_port = 30000
   #config.app_host = "stryptor.herokuapp.com"
 end
 

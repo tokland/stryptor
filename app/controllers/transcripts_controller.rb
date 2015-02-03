@@ -1,4 +1,6 @@
 class TranscriptsController < ApplicationController
+  AntiSpamToken = "1234"
+  
   before_filter :check_antispam_token, :only => :create
   
   def index
@@ -29,7 +31,7 @@ class TranscriptsController < ApplicationController
 private
 
   def check_antispam_token
-    unless params[:token] == "1234"
+    unless params[:token] == AntiSpamToken
       render :status => :forbidden, :text => "Forbidden"
     end
   end

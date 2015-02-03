@@ -21,6 +21,8 @@ gem 'migration_data'
 gem 'exception_notification'
 gem 'pg_search'
 gem "rails-i18n"
+gem 'disqus_rails'
+
 
 group :development do
   gem 'better_errors'

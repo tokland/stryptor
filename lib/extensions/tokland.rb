@@ -86,7 +86,7 @@ class Object
 end
 
 class Fixnum
-  def clip(minimum, maximum)
-    [[self, maximum].min, minimum].max
+  def clip_between(range)
+    [[self, range.end].min, range.begin].max
   end
 end

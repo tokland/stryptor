@@ -64,7 +64,7 @@
     </div>
     
     <% @strip.strip_collection.characters.maybe.split("|").value.as do |suggestions| %>
-      <%= javascript_tag("init_strip({suggestions: #{suggestions.to_json}});") %>
+      <%= javascript_tag("init_strip({token: #{TranscriptsController::AntiSpamToken.to_json}, suggestions: #{suggestions.to_json}});") %>
     <% end %>
   <% end %>
 <% end %>

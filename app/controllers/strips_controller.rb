@@ -19,9 +19,9 @@ class StripsController < ApplicationController
   end
   
   def search
-    @strip_collection = StripCollection.find_by_param!(params[:strip_collection_id])
     po = PaginationOptions
-    @per_page = (params[:per_page] || po[:default]).to_i.clip(po[:min], po[:max])
+    @strip_collection = StripCollection.find_by_param!(params[:strip_collection_id])
+    @per_page = (params[:per_page] || po[:default]).to_i.clip_between(po[:min]..po[:max])
     @strips = @strip_collection.strips.search(params[:text]).
       page(params[:page]).per(@per_page)
   end
