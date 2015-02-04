@@ -2,9 +2,13 @@
   <%= with_layout "strips/layout", strip_collection: @strip_collection do %>
     <div>
       <h2>
-        <%= link_to(@strip_collection.name, @strip_collection) %> - Historial de transcripciones: 
+        <%= link_to(@strip_collection.name, @strip_collection) %>
+        (<%= link_to("Descargar JSON", strip_collection_path(@strip_collection, format: :json)) %>) 
+        -
+        Historial de transcripciones:
         <%= Strip.with_transcriptions.count %> / <%= Strip.count %> 
       </h2>
+      
       <%= paginate @transcripts %>
       
       <% @transcripts.includes(:user).group_by { |t| t.created_at.to_date }.each do |date, transcripts| %>

@@ -5,7 +5,17 @@ class TranscriptsController < ApplicationController
   
   def index
     @strip_collection = StripCollection.find_by_param!(params[:strip_collection_id]) 
-    @transcripts = @strip_collection.transcripts.by_version(:desc).page(params[:page]).per(1000)
+
+    respond_to do |format|
+      if params[:strip_id]
+        strip = @strip_collection.strips.find_by_param!(params[:strip_id])
+        format.html { redirect_to(strip_path(strip)) }
+      else
+        @transcripts = @strip_collection.transcripts.by_version(:desc).
+          includes(:strip_collection, :strip).page(params[:page]).per(100)
+        format.html 
+      end
+    end
   end
   
   def show

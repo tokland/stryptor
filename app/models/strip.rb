@@ -43,6 +43,10 @@ class Strip < ActiveRecord::Base
   def current_transcript
     transcripts.order(Transcript[:created_at].desc).first    
   end
+
+  def as_json(options = {})
+    [:title, :text, :code, :image_url].mash { |field| [field, send(field)] }
+  end  
   
   def title
     "%{collection} %{strip}" % {collection: strip_collection.name, strip: code}

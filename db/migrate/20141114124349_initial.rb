@@ -11,7 +11,7 @@ class Initial < ActiveRecord::Migration
       t.integer :position, index: true
       t.attachment :image
       t.string :code, index: true
-      t.date :publised_on
+      t.date :published_on
       t.timestamps
     end
 

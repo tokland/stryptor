@@ -1,6 +1,7 @@
 class Transcript < ActiveRecord::Base
   belongs_to :user
   belongs_to :strip, counter_cache: true
+  has_one :strip_collection, :through => :strip
   
   after_commit :update_strip_text
   

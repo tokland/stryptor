@@ -5,7 +5,11 @@ class StripsController < ApplicationController
   def index
     collection = StripCollection.find_by_param!(params[:strip_collection_id])
     strip = collection.strips.first!
-    redirect_to(strip_path(strip))
+    
+    respond_to do |format|
+      format.html { redirect_to(strip_path(strip)) }
+      format.json { render(json: collection.strips.by_position) }
+    end
   end
   
   def show
