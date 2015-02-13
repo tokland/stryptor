@@ -9,8 +9,10 @@ class StripsController < ApplicationController
     respond_to do |format|
       format.html { redirect_to(strip_path(strip)) }
       format.json do
-        strips = collection.strips.by_position
-        render(json: strips, content_type: 'application/octet-stream')
+        render(
+          json: JSON.pretty_generate(collection.strips.by_position.as_json), 
+          content_type: 'application/octet-stream',
+        )
       end
     end
   end
