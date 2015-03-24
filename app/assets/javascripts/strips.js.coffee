@@ -25,6 +25,18 @@ init_submit_forms_on_control_enter = ->
       $(ev.target).parents("form").submit()
 
 init_autocomplete = (suggestions) ->
+#  $('#transcript_text').atwho
+#      at: "",
+#      data: suggestions
+
+#  $('#transcript_text').textcomplete([{
+#      match: /(^|\s)(\w{1,})$/
+#      search: (term, callback) ->
+#        callback($.map(suggestions, 
+#          (word) -> if word.indexOf(term) == 0 then word else null))
+#      replace: (word) -> word
+#  }])
+  
   $("#transcript_text").tabcomplete(suggestions, {
 	  after: ""
 	  arrowKeys: false
