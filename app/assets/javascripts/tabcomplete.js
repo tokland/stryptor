@@ -76,8 +76,8 @@
 			words = [];
 
 			// Check for matches if the current word is the last word.
-			if (self[0].selectionStart == input.length
-				&& word.length) {
+			if (self[0].selectionStart == input.length 
+			      && word.length) {
 				// Call the match() function to filter the words.
 				words = options.match(word, args, options.caseSensitive);
 
@@ -200,7 +200,7 @@
 
 	// Propagate scroll events from element <source> to element <destination>.
 	function follow_scroll(source, destination) { 
-		source.scroll(function() {
+		source.bind("scroll change", function() {
 			destination.scrollTop(source.scrollTop()); 
 			destination.scrollLeft(source.scrollLeft());
 		});
