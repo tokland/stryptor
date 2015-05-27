@@ -6,9 +6,11 @@
     
     <ul class="comic-nav">
       <li><%= link_to "|<", strip_path(@pagination.first), :accesskey => "f" %></li>
-      <li><%= link_to "< Anterior", strip_path(@pagination.previous), :accesskey => "p" %></li>
+      <li><%= link_to "< Anterior", strip_path(@pagination.previous), 
+                :accesskey => "p", :rel => "prev" %></li>
       <li><%= link_to "Aleatorio", random_path_for_collection_strip(@strip), :accesskey => "r" %></li>
-      <li><%= link_to "Siguiente >", strip_path(@pagination.next), :accesskey => "n" %></li>
+      <li><%= link_to "Siguiente >", strip_path(@pagination.next), 
+                :accesskey => "n", :rel => "next" %></li>
       <li><%= link_to ">|", strip_path(@pagination.last), :accesskey => "l" %></li>
     </ul>
     
