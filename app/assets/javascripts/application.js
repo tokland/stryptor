@@ -14,3 +14,10 @@
 //= require jquery_ujs
 //= require jquery-ui/tooltip
 //= require_tree .
+
+$(document).ready(function () {
+  $.cookieCuttr({
+    cookieAnalytics: false,
+    cookieMessage: "We use cookies in this site"
+  });	
+});
