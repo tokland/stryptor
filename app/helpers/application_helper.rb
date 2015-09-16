@@ -29,4 +29,9 @@ module ApplicationHelper
     other_params = request.get? ? {redirect_url: request.fullpath} : params 
     signin_path(params.merge(other_params))
   end
+
+  def javascript_globals
+    globals = {env: Rails.env}
+    javascript_tag("window.Rails = #{raw(globals.to_json)};")
+  end
 end
