@@ -1,0 +1,10 @@
+<%= with_public_layout strip_collection: @strip_collection do %>
+  <%= with_layout "strips/layout", strip_collection: @strip_collection do %>
+    <% @strips.each do |strip| %>
+      <div class="transcript">
+        <%= link_to strip.title, strip_path(strip), title: strip.text %>
+        <%= content_tag(:pre, strip.text, class: "text") %>
+      </div>
+    <% end %>
+  <% end %>
+<% end %>

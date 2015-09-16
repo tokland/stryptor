@@ -15,6 +15,7 @@ Rails.application.routes.draw do
       collection do
         get :random
         get :search
+        get :all
       end
       resources :transcripts, :only => [:show, :create]
     end

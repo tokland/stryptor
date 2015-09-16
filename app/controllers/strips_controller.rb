@@ -5,12 +5,18 @@ class StripsController < ApplicationController
   def index
     collection = StripCollection.find_by_param!(params[:strip_collection_id])
     strip = collection.strips.first!
+    redirect_to(strip_path(strip))
+  end
+  
+  def all
+    @strip_collection = StripCollection.find_by_param!(params[:strip_collection_id])
+    @strips = @strip_collection.strips.by_position
     
     respond_to do |format|
-      format.html { redirect_to(strip_path(strip)) }
+      format.html
       format.json do
         render(
-          json: JSON.pretty_generate(collection.strips.by_position.as_json), 
+          json: JSON.pretty_generate(@strips.as_json), 
           content_type: 'application/octet-stream',
         )
       end
