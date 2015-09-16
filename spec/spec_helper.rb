@@ -2,6 +2,7 @@ require 'capybara'
 require 'database_cleaner'
 require 'capybara/dsl'
 require 'capybara/webkit'
+require 'capybara/poltergeist'
 require 'rack_session_access/capybara'
 require 'rails_helper'
 
@@ -10,6 +11,10 @@ Capybara.configure do |config|
   config.server_host = "localhost"
   #config.server_port = 30000
   #config.app_host = "stryptor.herokuapp.com"
+end
+
+Capybara::Webkit.configure do |config|
+  config.block_unknown_urls
 end
 
 module ExpectOneLinerSyntax

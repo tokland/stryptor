@@ -1,4 +1,4 @@
-source 'http://rubygems.org'
+source 'http://production.s3.rubygems.org'
 ruby '2.1.4'
 
 gem 'rails', '4.1.7'
@@ -34,6 +34,7 @@ group :development do
   gem 'rb-fsevent', :require => false
   gem 'rb-inotify', :require => false
   gem 'heroku'
+  gem 'sextant'
 end
 
 group :development, :test do
@@ -53,6 +54,7 @@ group :test do
   gem 'capybara-webkit'
   gem 'database_cleaner'
   gem 'launchy'
+  gem 'poltergeist'
   gem 'selenium-webdriver'
   gem 'rack_session_access'
 end

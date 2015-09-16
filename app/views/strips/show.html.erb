@@ -34,15 +34,18 @@
             :html => {:class => "toggle-edit", :style => "display: none"} do |form| %>
         <%= hidden_field_tag :token, "", :id => "transcript-token" %>
         <%= form.text_area :text %>
+        <br />
         
-        <% unless user_signed_in? %>
-          <%= form.label :anonuser_name, "Tu nombre" %>:
-          <%= form.text_field :anonuser_name %>
-        <% end %>
-        <%= form.submit "Guardar" %>
-        
-        <%= link_to "Cancelar", "#", :accesskey => "c", :"data-toggle" => ".toggle-edit" %>
-        <%= link_to_history @strip %>
+        <div class="transcript-actions">
+          <% if !user_signed_in? %>
+            <%= form.label :anonuser_name, "Tu nombre" %>:
+            <%= form.text_field :anonuser_name %>
+          <% end %>
+          <%= form.submit "Guardar" %>
+          
+          <%= link_to "Cancelar", "#", :accesskey => "c", :"data-toggle" => ".toggle-edit" %>
+          <%= link_to_history @strip %>
+        </div>
       <% end %>
 
       <div id="transcript-history" style="display: none">
