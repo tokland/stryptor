@@ -1,5 +1,7 @@
 #!/bin/sh
 set -e
+
 git push heroku master
 heroku run rake db:migrate
+git push github master
 #RAILS_ENV=production be rspec
