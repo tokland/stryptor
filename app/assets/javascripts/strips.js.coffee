@@ -88,7 +88,7 @@ set_token = (value) ->
 
 window.init_strip = (options) ->
   $ ->
-    init_autocomplete(options.suggestions)
+    init_autocomplete(options.suggestions) if Rails.env != "test"
     set_token(options.token)
 
 main = ->
